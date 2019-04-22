@@ -29,7 +29,7 @@ function paintResults(array) {
     // console.log(arrNames, arrUrls);
 
     if (!element.show.image) {
-      arrUrls = 'https://via.placeholder.com/210x295/f4eded/9b1414/?text=show';
+      arrUrls = `https://via.placeholder.com/210x295/f4eded/9b1414/?text=${arrNames}`;
       console.log('replacing image');
     } else {
       arrUrls = element.show.image.medium;
@@ -61,6 +61,9 @@ function handlerBtn() {
       const arrShows = data;
       //   console.log('arrShows', arrShows);
 
+      //Reset results
+      resultListEl.innerHTML = '';
+      //Paint results
       paintResults(arrShows);
     });
 }
