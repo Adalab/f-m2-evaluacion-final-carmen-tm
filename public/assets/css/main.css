@@ -32,7 +32,15 @@ body {
 
 .preview--favourite {
   background-color: yellow;
-  width: 150px;
+  width: 50px;
+}
+
+.preview--favourite img {
+  width: 100%;
+}
+
+.preview--favourite h3 {
+  font-size: 12px;
 }
 
 .favourites {

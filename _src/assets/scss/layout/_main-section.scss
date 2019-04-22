@@ -13,7 +13,14 @@
 
 .preview--favourite {
   background-color: yellow;
-  width: 150px;
+  width: 50px;
+
+  img {
+    width: 100%;
+  }
+  h3 {
+    font-size: 12px;
+  }
 }
 .favourites {
   margin-right: 50px;

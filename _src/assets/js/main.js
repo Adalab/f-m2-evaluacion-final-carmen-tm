@@ -7,26 +7,10 @@ const btnEl = document.querySelector('.btn');
 
 const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
-// console.log(inputEl, btnEl, resultListEl, favouritesListEl);
 
-const myFavouriteShows = [];
+const myFavShowsArr = [];
 
 function createItem(a, b) {
-  return (
-    `<li class="show-card">
-          <img src="` +
-    b +
-    `" alt=` +
-    a +
-    `>` +
-    `<p>` +
-    a +
-    `</p>` +
-    `</li>`
-  );
-}
-
-function createItem2(a, b) {
   //Create li elements
   const newItemEl = document.createElement('li');
   newItemEl.classList.add('show-card');
@@ -45,19 +29,6 @@ function createItem2(a, b) {
   //   console.log(newItemEl);
 
   return newItemEl;
-
-  //   return (
-  //     `<li class="show-card">
-  //             <img src="` +
-  //     b +
-  //     `" alt=` +
-  //     a +
-  //     `>` +
-  //     `<p>` +
-  //     a +
-  //     `</p>` +
-  //     `</li>`
-  //   );
 }
 
 function paintResults(array, list) {
@@ -71,44 +42,34 @@ function paintResults(array, list) {
       arrUrls = element.show.image.medium;
     }
 
-    const itemsFilled = createItem2(arrNames, arrUrls);
+    const itemsFilled = createItem(arrNames, arrUrls);
 
     list.appendChild(itemsFilled);
-    // list.innerHTML += itemsFilled;
   }
 }
 
+function createFavItem(a) {
+  //Make a copy of the li element as favourite
+  const favItemCloned = a.cloneNode(true);
+  favItemCloned.classList.add('preview--favourite');
+  //   console.log('favItemCloned', favItemCloned);
+
+  return favItemCloned;
+}
+
 function paintResultsReduced(array, list) {
-  for (const element of array) {
-    console.log('element', element);
-    // const arrFavouriteNames = element.text
-    const favItem = document.createElement('li');
-    favItem.classList.add('preview--favourite');
-
-    const favItemContent = element.innerHTML;
-    console.log('favItemContent', favItemContent);
-
-    favItem.appendChild(favItemContent);
-
-    // const favItemText = document.createElement(favItemContent);
-    // favItem.appendChild(favItemText);
-    // console.log('favItem', favItem);
-
-    list.appendChild(favItem);
-
-    // list.innerHTML += favouriteItem;
-  }
+  list.appendChild(array);
 }
 
 function selectFavourite(a) {
   //Include favourite items in an array
   //NOT WORKING. IF NOT FAVOURITE (NOT HAVING THAT CLASS), IT SHOULD REMOVE IT FROM THE ARRAY
   if (a.classList.contains('show-card--favourite')) {
-    myFavouriteShows.push(a);
-    console.log('myFavouriteShows', myFavouriteShows);
-  } else {
-    delete myFavouriteShows[a];
-    console.log('myFavouriteShows', myFavouriteShows);
+    myFavShowsArr.push(a);
+    console.log('myFavShowsArr', myFavShowsArr);
+    //   } else {
+    //     delete myFavShowsArr[a];
+    //     console.log('myFavShowsArr', myFavShowsArr);
   }
 }
 
@@ -121,8 +82,11 @@ function handlerCardsClick(event) {
 
   selectFavourite(selectedCard);
 
+  //Copy items
+  const favItems = createFavItem(selectedCard);
+
   //Paint favourite results on its list
-  paintResultsReduced(myFavouriteShows, favouritesListEl);
+  paintResultsReduced(favItems, favouritesListEl);
 }
 
 //Handler for main button
