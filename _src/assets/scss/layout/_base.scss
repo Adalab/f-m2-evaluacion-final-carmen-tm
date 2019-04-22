@@ -1,0 +1,28 @@
+// Common general rules and resets:
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+// General settings:
+body {
+  background-color: pink;
+
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+
+  // background-color: #fff;
+  color: black;
+  // Para que ocupe como mínimo el alto de mi pantalla
+  min-height: 100vh;
+}
