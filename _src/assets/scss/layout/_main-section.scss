@@ -1,9 +1,13 @@
+.app-main-content {
+  padding: 30px;
+}
+
 // Styles for each tv show
 .show-card {
   color: $color-secundary;
   background-color: $color-primary;
-  padding: 5px;
-  border: 1px solid white;
+  padding: 10px;
+  margin: 5px;
 }
 
 .show-card--favourite {
@@ -13,7 +17,7 @@
 
 .preview--favourite {
   background-color: $color-tertiary;
-  width: 50px;
+  width: 100px;
 
   img {
     width: 100%;
@@ -39,6 +43,7 @@
     justify-content: center;
   }
   &__title {
+    margin-bottom: 10px;
     color: $color-primary;
     font-size: $font-size-L;
   }
