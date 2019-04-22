@@ -48,7 +48,9 @@
 }
 
 .preview--favourite {
+  border: 3px solid black;
   width: 100px;
+  // position: relative;
 
   img {
     width: 100%;
@@ -56,6 +58,30 @@
   h3 {
     font-size: $font-size-S;
   }
+
+  // &::after {
+  //   content: '';
+  //   background-color: yellow;
+  //   border-radius: 50%;
+  //   color: black;
+  //   display: block;
+  //   width: 50px;
+  //   height: 50px;
+
+  //   position: absolute;
+  //   top: 5px;
+  //   left: 5px;
+  // }
+}
+
+.reset-btn {
+  color: $color-neutral-0;
+  background-color: $color-primary;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  padding: 3px;
+  // font-weight: 8s00;
 }
 
 ////////////////////////////////////////////////
