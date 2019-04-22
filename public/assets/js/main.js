@@ -125,7 +125,7 @@ btnEl.addEventListener('click', handlerBtn);
 
 //initial info: array of favourites
 const fakeArray = document.querySelectorAll('.fake-item');
-// console.log(fakeArray);
+console.log(fakeArray);
 
 const favArrObjects = [];
 const myObject = {};
@@ -152,5 +152,24 @@ function storeInLS(a, b) {
   localStorage.setItem(a, JSON.stringify(b));
 }
 storeInLS('favArrObjects', favArrObjects);
+
+//Retrieve info from LS
+function refreshPage() {
+  //Check if LS has something
+  const infoSavedInLS = JSON.parse(localStorage.getItem('favArrObjects'));
+
+  if (infoSavedInLS) {
+    console.log('caché has something', infoSavedInLS);
+
+    for (const object of infoSavedInLS) {
+      const myUrl = object.url;
+      const myTitle = object.title;
+      console.log(myUrl, myTitle);
+    }
+  } else {
+    console.log('caché is empty');
+  }
+}
+refreshPage();
 
 //# sourceMappingURL=main.js.map
