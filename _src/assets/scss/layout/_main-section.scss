@@ -1,7 +1,85 @@
 .app-main-content {
-  padding: 30px;
+  padding: 20px;
+  display: flex;
 }
 
+// Styles for section app-searcher-favourites on the left side
+.app-searcher-favourites {
+  width: 40%;
+}
+
+.app-searcher {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  // background-color: green;
+  padding-bottom: 20px;
+  border-bottom: 2px solid $color-primary;
+}
+
+.app-label {
+  color: $color-neutral-500;
+  margin-bottom: 10px;
+}
+
+.app-input {
+  height: 30px;
+  // width: 100px;
+  padding-left: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $color-primary;
+}
+
+.btn {
+  background-color: $color-primary;
+  color: $color-neutral-0;
+  padding: 2px 10px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+
+.favourites {
+  margin-top: 20px;
+  // background-color: blue;
+  &__title {
+    color: $color-primary;
+    font-size: $font-size-L;
+  }
+}
+
+.preview--favourite {
+  width: 100px;
+
+  img {
+    width: 100%;
+  }
+  h3 {
+    font-size: $font-size-S;
+  }
+}
+
+////////////////////////////////////////////////
+
+// Styles for section app-result on the right side
+
+.results {
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 2px solid $color-primary;
+  // background-color: pink;
+  &__list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  &__title {
+    margin-bottom: 10px;
+    color: $color-primary;
+    font-size: $font-size-L;
+    text-align: center;
+  }
+}
 // Styles for each tv show
 .show-card {
   color: $color-secundary;
@@ -13,40 +91,6 @@
 .show-card--favourite {
   color: $color-primary;
   background-color: $color-secundary;
-}
-
-.preview--favourite {
-  background-color: $color-tertiary;
-  width: 100px;
-
-  img {
-    width: 100%;
-  }
-  h3 {
-    font-size: $font-size-S;
-  }
-}
-
-.favourites {
-  margin-right: 50px;
-  &__title {
-    color: $color-primary;
-    font-size: $font-size-L;
-  }
-}
-
-.results {
-  &__list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  &__title {
-    margin-bottom: 10px;
-    color: $color-primary;
-    font-size: $font-size-L;
-  }
 }
 
 .app-result {

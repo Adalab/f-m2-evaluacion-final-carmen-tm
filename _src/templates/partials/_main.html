@@ -1,9 +1,22 @@
 <main class="app-main-content">
-  <section class="app-result">
-    <div class="favourites">
+  <div class="app-searcher-favourites">
+    <section class="app-searcher">
+      <form method="get">
+        <label for="show" class="app-label">Nombre de tu serie</label>
+        <div class="flex-container">
+          <input type="text" class="app-input" name="show" />
+          <button type="button" class="btn">Buscar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="favourites">
       <h2 class="favourites__title">Mis series favoritas</h2>
       <ul class="favourites__list"></ul>
-    </div>
+    </section>
+  </div>
+
+  <section class="app-result">
     <div class="results">
       <h2 class="results__title">Resultados de la búsqueda</h2>
       <ul class="results__list"></ul>
