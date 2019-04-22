@@ -4,7 +4,7 @@
 //Get elements
 const inputEl = document.querySelector('.app-input');
 const btnEl = document.querySelector('.btn');
-const resultListEl = document.querySelector('.list-results');
+const resultListEl = document.querySelector('.results__list');
 // console.log(inputEl, btnEl, resultListEl);
 
 function createItem(a, b) {
@@ -67,5 +67,7 @@ function handlerBtn() {
 
 //Add lister to main button
 btnEl.addEventListener('click', handlerBtn);
+
+//Add listener to each card from the results
 
 //# sourceMappingURL=main.js.map

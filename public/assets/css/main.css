@@ -15,12 +15,30 @@ body {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.4;
-  color: black;
+  color: dimgrey;
 }
 
 .show-card {
   background-color: crimson;
   color: blue;
+}
+
+.favourites {
+  margin-right: 50px;
+}
+
+.favourites__title {
+  color: crimson;
+}
+
+.results__title {
+  color: crimson;
+}
+
+.app-result {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 /*# sourceMappingURL=main.css.map */
