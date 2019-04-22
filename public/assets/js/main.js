@@ -52,7 +52,16 @@ function createFavItem(a) {
   //Make a copy of the li element as favourite
   const favItemCloned = a.cloneNode(true);
   favItemCloned.classList.add('preview--favourite');
-  //   console.log('favItemCloned', favItemCloned);
+  console.log('favItemCloned', favItemCloned);
+
+  //Create btn reset
+  const resetBtnEl = document.createElement('button');
+  resetBtnEl.classList.add('reset-btn');
+  const resetBtnContent = document.createTextNode('x');
+  resetBtnEl.appendChild(resetBtnContent);
+  resetBtnEl.setAttribute('data--id', 'trial');
+
+  favItemCloned.appendChild(resetBtnEl);
 
   return favItemCloned;
 }
@@ -73,12 +82,17 @@ function selectFavourite(a) {
   }
 }
 
+function handlerResetBtnClick(event) {
+  const resetBtnClicked = event.currentTarget;
+  console.log('click');
+}
+
 function handlerCardsClick(event) {
   const selectedCard = event.currentTarget;
   //   console.log('selecting one card', selectedCard);
 
   //Add a special class for favourites
-  selectedCard.classList.toggle('show-card--favourite');
+  selectedCard.classList.add('show-card--favourite');
 
   selectFavourite(selectedCard);
 
@@ -87,10 +101,18 @@ function handlerCardsClick(event) {
 
   //Paint favourite results on its list
   paintResultsReduced(favItems, favouritesListEl);
+
+  const resetArrayBtnEl = document.querySelectorAll('.reset-btn');
+  // console.log(resetArrayBtnEl);
+
+  //Add listener to each reset butoton
+  for (const button of resetArrayBtnEl) {
+    button.addEventListener('click', handlerResetBtnClick);
+  }
 }
 
 //Handler for main button
-function handlerBtn() {
+function handlerBtnSearch() {
   //Save user input value
   const userValue = inputEl.value;
   //   console.log(userValue);
@@ -120,7 +142,7 @@ function handlerBtn() {
     });
 }
 
-//Add lister to main button
-btnEl.addEventListener('click', handlerBtn);
+//Add listener to main button
+btnEl.addEventListener('click', handlerBtnSearch);
 
 //# sourceMappingURL=main.js.map

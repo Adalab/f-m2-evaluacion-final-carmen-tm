@@ -38,9 +38,10 @@ body {
 }
 
 .app-header {
-  background-color: crimson;
+  background-image: -webkit-gradient(linear, left top, right top, from(crimson), to(coral));
+  background-image: linear-gradient(to right, crimson, coral);
   color: white;
-  height: 50px;
+  height: 80px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -162,7 +163,7 @@ body {
 }
 
 .show-card {
-  color: blue;
+  color: coral;
   background-color: crimson;
   padding: 10px;
   margin: 5px;
@@ -170,7 +171,7 @@ body {
 
 .show-card--favourite {
   color: crimson;
-  background-color: blue;
+  background-color: coral;
 }
 
 .app-result {
@@ -180,8 +181,18 @@ body {
 }
 
 .app-footer {
-  background-color: yellow;
-  height: 20px;
+  color: crimson;
+  background-color: coral;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 30px;
   margin-top: auto;
 }
 
