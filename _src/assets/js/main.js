@@ -22,6 +22,26 @@ function createItem(a, b) {
   );
 }
 
+function paintResults(array) {
+  for (const element of array) {
+    const arrNames = element.show.name;
+    let arrUrls = '';
+    // console.log(arrNames, arrUrls);
+
+    if (!element.show.image) {
+      arrUrls = 'https://via.placeholder.com/210x295/f4eded/9b1414/?text=show';
+      console.log('replacing image');
+    } else {
+      arrUrls = element.show.image.medium;
+    }
+
+    const itemsFilled = createItem(arrNames, arrUrls);
+    // console.log(itemsFilled);
+
+    resultListEl.innerHTML += itemsFilled;
+  }
+}
+
 //Handler for main button
 function handlerBtn() {
   //Save user input value
@@ -40,16 +60,8 @@ function handlerBtn() {
       //The response is an array of objects
       const arrShows = data;
       //   console.log('arrShows', arrShows);
-      for (const element of arrShows) {
-        const arrNames = element.show.name;
-        const arrUrls = element.show.image.medium;
-        console.log(arrNames, arrUrls);
 
-        const itemsFilled = createItem(arrNames, arrUrls);
-        console.log(itemsFilled);
-
-        resultListEl.innerHTML += itemsFilled;
-      }
+      paintResults(arrShows);
     });
 }
 
