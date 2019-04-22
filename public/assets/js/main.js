@@ -52,6 +52,10 @@ function createFavItem(a) {
   //Make a copy of the li element as favourite
   const favItemCloned = a.cloneNode(true);
   favItemCloned.classList.add('preview--favourite');
+  const title = favItemCloned.innerText;
+
+  //Create an id matching its title
+  favItemCloned.setAttribute('id', title);
   console.log('favItemCloned', favItemCloned);
 
   //Create btn reset
@@ -59,7 +63,7 @@ function createFavItem(a) {
   resetBtnEl.classList.add('reset-btn');
   const resetBtnContent = document.createTextNode('x');
   resetBtnEl.appendChild(resetBtnContent);
-  resetBtnEl.setAttribute('data--id', 'trial');
+  resetBtnEl.setAttribute('data--id', title);
 
   favItemCloned.appendChild(resetBtnEl);
 
@@ -84,7 +88,35 @@ function selectFavourite(a) {
 
 function handlerResetBtnClick(event) {
   const resetBtnClicked = event.currentTarget;
-  console.log('click');
+  const resetBtnClickedData = resetBtnClicked.getAttribute('data--id');
+  console.log('click', resetBtnClickedData);
+  // console.dir(resetBtnClicked);
+
+  // const itemForRemove = getElementById(resetBtnClickedData);
+  const itemForRemove = resetBtnClicked.parentNode;
+  console.log(itemForRemove);
+
+  favouritesListEl.removeChild(itemForRemove);
+
+  //To remove the item from my array of favourites I need to find its index
+  for (const element of myFavShowsArr) {
+    const titleFav = element.innerText;
+    const idFavRemove = itemForRemove.getAttribute('id');
+    if (titleFav === idFavRemove) {
+      console.log('quiero borrar este item');
+
+      const myIndex = myFavShowsArr.indexOf(element);
+      console.log(myIndex);
+      //The method splice() remove one element knowing it index. The inputs are the index point to start at and the number of elements to remove.
+      myFavShowsArr.splice(myIndex, 1);
+      console.log(myFavShowsArr);
+
+      ///MISSING JUST REMOVING THE FAV CLASS ON THE LIST OF RESULTS!!!
+    }
+  }
+  // console.log(itemForRemove);
+  // console.log(myFavShowsArr);
+  // console.log(myIndex);
 }
 
 function handlerCardsClick(event) {
