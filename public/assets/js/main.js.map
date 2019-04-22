@@ -1,1 +1,1 @@
-{"version":3,"sources":["main.js"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA","file":"main.js","sourcesContent":["/* eslint-disable no-console */\n'use strict';\n\nconsole.log('>> this is working :)');\n"]}
+{"version":3,"sources":["main.js"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA","file":"main.js","sourcesContent":["/* eslint-disable no-console */\n'use strict';\nconsole.log('A');\nconst x = 3;\nconsole.log(x);\n"]}

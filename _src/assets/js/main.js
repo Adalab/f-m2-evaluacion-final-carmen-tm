@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
 'use strict';
-
-console.log('>> this is working :)');
+console.log('A');
+const x = 3;
+console.log(x);
