@@ -4,8 +4,12 @@
 //Get elements
 const inputEl = document.querySelector('.app-input');
 const btnEl = document.querySelector('.btn');
+
 const resultListEl = document.querySelector('.results__list');
-// console.log(inputEl, btnEl, resultListEl);
+const favouritesListEl = document.querySelector('.favourites__list');
+// console.log(inputEl, btnEl, resultListEl, favouritesListEl);
+
+const myFavouriteShows = [];
 
 function createItem(a, b) {
   return (
@@ -22,38 +26,65 @@ function createItem(a, b) {
   );
 }
 
-function paintResults(array) {
+function paintResults(array, list) {
   for (const element of array) {
     const arrNames = element.show.name;
     let arrUrls = '';
-    // console.log(arrNames, arrUrls);
 
     if (!element.show.image) {
       arrUrls = `https://via.placeholder.com/210x295/f4eded/9b1414/?text=${arrNames}`;
-      console.log('replacing image');
     } else {
       arrUrls = element.show.image.medium;
     }
 
     const itemsFilled = createItem(arrNames, arrUrls);
-    // console.log(itemsFilled);
 
-    resultListEl.innerHTML += itemsFilled;
+    list.innerHTML += itemsFilled;
   }
+}
+
+function paintResultsReduced(array, list) {
+  for (const element of array) {
+    list.innerHTML += element;
+  }
+}
+
+function selectFavourite(a) {
+  //Include favourite items in an array
+  //NOT WORKING. IF NOT FAVOURITE (NOT HAVING THAT CLASS), IT SHOULD REMOVE IT FROM THE ARRAY
+  if (a.classList.contains('show-card--favourite')) {
+    myFavouriteShows.push(a);
+    console.log('myFavouriteShows', myFavouriteShows);
+  } else {
+    delete myFavouriteShows[a];
+    console.log('myFavouriteShows', myFavouriteShows);
+  }
+}
+
+function handlerCardsClick(event) {
+  const selectedCard = event.currentTarget;
+  //   console.log('selecting one card', selectedCard);
+
+  //Add a special class for favourites
+  selectedCard.classList.toggle('show-card--favourite');
+
+  selectFavourite(selectedCard);
+
+  //Paint favourite results on its list
+  paintResultsReduced(myFavouriteShows, favouritesListEl);
 }
 
 //Handler for main button
 function handlerBtn() {
   //Save user input value
   const userValue = inputEl.value;
-  console.log(userValue);
+  //   console.log(userValue);
   //Connect to API
   fetch(`http://api.tvmaze.com/search/shows?q=${userValue}`)
     .then(function(response) {
       return response.json();
     })
     .then(function(responseParsed) {
-      console.log(responseParsed);
       return responseParsed;
     })
     .then(function(data) {
@@ -64,13 +95,17 @@ function handlerBtn() {
       //Reset results
       resultListEl.innerHTML = '';
       //Paint results
-      paintResults(arrShows);
+      paintResults(arrShows, resultListEl);
+
+      //Add listener to each card from the results
+      const resultsCardEl = document.querySelectorAll('.show-card');
+      for (const card of resultsCardEl) {
+        card.addEventListener('click', handlerCardsClick);
+      }
     });
 }
 
 //Add lister to main button
 btnEl.addEventListener('click', handlerBtn);
-
-//Add listener to each card from the results
 
 //# sourceMappingURL=main.js.map
