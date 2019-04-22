@@ -1,10 +1,10 @@
 # About Series Search Engine WebApp
 
-This is a website game that challenges users to guess a random number through tips. Come and play!!
+This is a Series Search Engine WebApp.
 
 ## Getting started
 
-You don't need to clone or install this repo to play. Just click on the following link [Series Search Engine](....) and have fun!
+You don't need to clone or install this repo to play. Just click on the following link [Series Search Engine](http://beta.adalab.es/f-m2-evaluacion-final-carmen-tm/) and have fun!
 
 ## Contributing
 

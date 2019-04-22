@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
-console.log('>> Ready :)');
+console.log('>> this is working :)');
