@@ -26,6 +26,40 @@ function createItem(a, b) {
   );
 }
 
+function createItem2(a, b) {
+  //Create li elements
+  const newItemEl = document.createElement('li');
+  newItemEl.classList.add('show-card');
+
+  //Create content node
+  const contentItemImgEl = document.createElement('img');
+  contentItemImgEl.setAttribute('src', b);
+  contentItemImgEl.setAttribute('alt', a);
+
+  const contentItemTitleEl = document.createElement('h3');
+  const contentItemTitleText = document.createTextNode(a);
+  contentItemTitleEl.appendChild(contentItemTitleText);
+
+  newItemEl.appendChild(contentItemImgEl);
+  newItemEl.appendChild(contentItemTitleEl);
+  //   console.log(newItemEl);
+
+  return newItemEl;
+
+  //   return (
+  //     `<li class="show-card">
+  //             <img src="` +
+  //     b +
+  //     `" alt=` +
+  //     a +
+  //     `>` +
+  //     `<p>` +
+  //     a +
+  //     `</p>` +
+  //     `</li>`
+  //   );
+}
+
 function paintResults(array, list) {
   for (const element of array) {
     const arrNames = element.show.name;
@@ -37,15 +71,32 @@ function paintResults(array, list) {
       arrUrls = element.show.image.medium;
     }
 
-    const itemsFilled = createItem(arrNames, arrUrls);
+    const itemsFilled = createItem2(arrNames, arrUrls);
 
-    list.innerHTML += itemsFilled;
+    list.appendChild(itemsFilled);
+    // list.innerHTML += itemsFilled;
   }
 }
 
 function paintResultsReduced(array, list) {
   for (const element of array) {
-    list.innerHTML += element;
+    console.log('element', element);
+    // const arrFavouriteNames = element.text
+    const favItem = document.createElement('li');
+    favItem.classList.add('preview--favourite');
+
+    const favItemContent = element.innerHTML;
+    console.log('favItemContent', favItemContent);
+
+    favItem.appendChild(favItemContent);
+
+    // const favItemText = document.createElement(favItemContent);
+    // favItem.appendChild(favItemText);
+    // console.log('favItem', favItem);
+
+    list.appendChild(favItem);
+
+    // list.innerHTML += favouriteItem;
   }
 }
 
