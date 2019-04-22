@@ -122,3 +122,33 @@ function handlerBtn() {
 
 //Add lister to main button
 btnEl.addEventListener('click', handlerBtn);
+
+//initial info: array of favourites
+const fakeArray = document.querySelectorAll('.fake-item');
+// console.log(fakeArray);
+
+const favArrObjects = [];
+const myObject = {};
+
+for (let i = 0; i < fakeArray.length; i++) {
+  const favImgEl = fakeArray[i].firstElementChild;
+  const favImgUrl = favImgEl.src;
+
+  const favTitleEl = fakeArray[i].lastElementChild;
+  const favTitleText = favTitleEl.innerHTML;
+
+  myObject.url = favImgUrl;
+  myObject.title = favTitleText;
+  // console.log(myObject);
+
+  favArrObjects.push(myObject);
+}
+
+//I have an array of objects to be store in LS
+console.log(favArrObjects);
+
+//Store our array in LS
+function storeInLS(a, b) {
+  localStorage.setItem(a, JSON.stringify(b));
+}
+storeInLS('favArrObjects', favArrObjects);
