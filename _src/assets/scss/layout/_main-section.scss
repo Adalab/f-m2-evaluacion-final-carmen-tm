@@ -22,6 +22,7 @@
     font-size: $font-size-S;
   }
 }
+
 .favourites {
   margin-right: 50px;
   &__title {
@@ -31,6 +32,12 @@
 }
 
 .results {
+  &__list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   &__title {
     color: $color-primary;
     font-size: $font-size-L;
