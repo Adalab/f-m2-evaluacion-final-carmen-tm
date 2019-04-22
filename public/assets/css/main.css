@@ -18,8 +18,9 @@ body {
   color: black;
 }
 
-* {
+.show-card {
   background-color: crimson;
+  color: blue;
 }
 
 /*# sourceMappingURL=main.css.map */

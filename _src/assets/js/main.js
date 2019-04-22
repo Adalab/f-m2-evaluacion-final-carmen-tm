@@ -9,7 +9,7 @@ const resultListEl = document.querySelector('.list-results');
 
 function createItem(a, b) {
   return (
-    `<li>
+    `<li class="show-card">
           <img src="` +
     b +
     `" alt=` +
