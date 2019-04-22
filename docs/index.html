@@ -1,16 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+    
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"
+        />
         <title>Series Search Engine</title>
         <link rel="icon" href="favicon.png" />
         <link rel="stylesheet" href="assets/css/main.css" />
     </head>
-
+    
     <body>
         <div class="page-container">
-            <main class="main-container">main</main>
+             <h1 class="app-title">
+  Buscador de series
+</h1>
+
+            <section class="app-searcher">
+                <form method="get">
+                    <input type="text" class="app-input" />
+                    <button type="button">Seach</button>
+                </form>
+            </section>
+            <section class="app-result">
+                <ul class="list-results"></ul>
+            </section>
         </div>
+        <script type="text/javascript" src="assets/js/main.js"></script>
     </body>
+
 </html>
