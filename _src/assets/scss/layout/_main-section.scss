@@ -1,38 +1,39 @@
 // Styles for each tv show
 .show-card {
-  color: blue;
-  background-color: crimson;
+  color: $color-secundary;
+  background-color: $color-primary;
   padding: 5px;
   border: 1px solid white;
 }
 
 .show-card--favourite {
-  color: crimson;
-  background-color: blue;
+  color: $color-primary;
+  background-color: $color-secundary;
 }
 
 .preview--favourite {
-  background-color: yellow;
+  background-color: $color-tertiary;
   width: 50px;
 
   img {
     width: 100%;
   }
   h3 {
-    font-size: 12px;
+    font-size: $font-size-S;
   }
 }
 .favourites {
   margin-right: 50px;
-
   &__title {
-    color: crimson;
+    color: $color-primary;
+    font-size: $font-size-L;
   }
 }
 
 .results {
   &__title {
-    color: crimson;
+    color: $color-primary;
+    font-size: $font-size-L;
   }
 }
 
