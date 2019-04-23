@@ -14,8 +14,9 @@ let resultsArr = [];
 //Empty array for storing favourites shows
 const myFavShowsArr = [];
 //Emtpy array of objects for paiting in favourit list and storing in LS
-const favShowsObject = [];
+const favShowsObjectsArray = [];
 
+//Create items from the API result
 function createItemsFromSearch(array) {
   //Reset array
   resultsArr = [];
@@ -51,7 +52,7 @@ function createItemsFromSearch(array) {
     //Fill empty array with all items:
     resultsArr.push(newItemEl);
   }
-  console.log('my array of results is working', 'resultsArr', resultsArr);
+  // console.log('my array of results is working', 'resultsArr', resultsArr);
   return resultsArr;
 }
 
@@ -65,6 +66,8 @@ function appendClass(arrayItems, myClass) {
 
 //THIRD Append each li to its list
 function paintResults(array, list) {
+  // Reset list content
+  list.innerHTML = '';
   for (const element of array) {
     list.appendChild(element);
   }
@@ -79,33 +82,65 @@ function storeArrInObject(array) {
     const favTitleText = favTitleEl.innerHTML;
     // console.log(favTitleText);
 
-    favShowsObject[i] = {
+    favShowsObjectsArray[i] = {
       url: favImgUrl,
       title: favTitleText
     };
   }
 }
 
+function createItemsFromObjArr(array) {
+  const arrItemsToPaint = [];
+  for (const item of array) {
+    const name = item.title;
+    const url = item.url;
+
+    //Create elements and contents
+    const prevItemEl = document.createElement('li');
+
+    const prevItemImgEl = document.createElement('img');
+    prevItemImgEl.setAttribute('src', url);
+    prevItemImgEl.setAttribute('alt', name);
+
+    const prevItemTitleEl = document.createElement('h3');
+    const prevItemTitleContent = document.createTextNode(name);
+    prevItemTitleEl.appendChild(prevItemTitleContent);
+
+    //Append filled elements to my item
+    prevItemEl.appendChild(prevItemImgEl);
+    prevItemEl.appendChild(prevItemTitleEl);
+    prevItemEl.classList.add('preview--favourite');
+    arrItemsToPaint.push(prevItemEl);
+  }
+  // console.log(arrItemsToPaint);
+  return arrItemsToPaint;
+}
+
 //Add favourite functionlity on click
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
 
-  //Add a special class for favourites
-  selectedCard.classList.add('show-card--favourite');
+  //Check if the object has the class to add it
+  const testFav = selectedCard.classList.contains('show-card--favourite');
+  if (!testFav) {
+    //Add a special class for favourites
+    selectedCard.classList.add('show-card--favourite');
 
-  //Store in my favArray empty array
-  myFavShowsArr.push(selectedCard);
-  console.log('myFavShowsArr', myFavShowsArr);
+    //Store in my favArray empty array
+    myFavShowsArr.push(selectedCard);
+    console.log('myFavShowsArr', myFavShowsArr);
 
-  //Store my array of li in an object
-  storeArrInObject(myFavShowsArr);
-  console.log('favShowsObject', favShowsObject);
+    //Store my array of li in an object
+    storeArrInObject(myFavShowsArr);
+    console.log('favShowsObjectsArray', favShowsObjectsArray);
 
-  // const myFavShowsArrCloned = cloneArray(myFavShowsArr);
-  // console.log(myFavShowsArr);
+    //Create array of li filled with content from the array of objects we have
+    const newItemToPaint = createItemsFromObjArr(favShowsObjectsArray);
+    console.log('newItemToPaint', newItemToPaint);
 
-  // THIRD Paint li on my favourist list
-  // paintResults(myFavShowsArrCloned, favouritesListEl);
+    // Paint li on my favourist list
+    paintResults(newItemToPaint, favouritesListEl);
+  }
 }
 
 //Handler for main button
@@ -125,9 +160,6 @@ function handlerBtnSearch() {
       //The response is an array of objects
       const arrShows = data;
       // console.log('arrShows', arrShows);
-
-      //Reset results list on every search
-      resultListEl.innerHTML = '';
 
       //FIRST Create li items from data
       const myItems = createItemsFromSearch(arrShows);
