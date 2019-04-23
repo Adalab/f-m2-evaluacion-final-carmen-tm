@@ -59,6 +59,7 @@ function createItemsFromSearch(array) {
 function appendClass(arrayItems, myClass) {
   for (const item of arrayItems) {
     item.classList.add(myClass);
+    item.setAttribute('title', 'Añade a tu lista de favoritos');
   }
   return arrayItems;
 }
@@ -78,9 +79,7 @@ function storeArrInObject(array) {
     const favImgUrl = favImgEl.src;
 
     const favTitleEl = favImgEl.nextElementSibling;
-    console.log(favTitleEl);
     const favTitleText = favTitleEl.innerHTML;
-    console.log(favTitleText);
 
     favShowsObjectsArray[i] = {
       url: favImgUrl,
@@ -116,7 +115,6 @@ function createItemsFromObjArr(array) {
 
     arrItemsToPaint.push(prevItemEl);
   }
-  console.log(arrItemsToPaint);
   return arrItemsToPaint;
 }
 
@@ -129,10 +127,7 @@ function refreshPage() {
   const infoSavedInLS = JSON.parse(localStorage.getItem('myObject'));
 
   if (infoSavedInLS) {
-    console.log('caché has something', infoSavedInLS);
-
     const savedItemToPaint = createItemsFromObjArr(infoSavedInLS);
-    console.log('savedItemToPaint', savedItemToPaint);
 
     myFavShowsArr = savedItemToPaint;
 
@@ -169,17 +164,16 @@ function addResetBtn(title, myItem) {
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
   const idFav = selectedCard.id;
-  console.log(idFav);
-  console.log(myFavShowsArr);
+  // console.log(idFav);
+  // console.log(myFavShowsArr);
 
   for (const card of myFavShowsArr) {
-    console.log(myFavShowsArr);
     //If element is already there, abort
     if (idFav === card.id) {
       card.classList.add('show-card--favourite');
       return;
     } else {
-      console.log('id nuevo');
+      // console.log('id nuevo');
     }
   }
   //Add a special class for favourites
@@ -187,14 +181,12 @@ function handlerCardsFavClick(event) {
 
   //Store in my favArray empty array
   myFavShowsArr.push(selectedCard);
-  console.log('myFavShowsArr', myFavShowsArr);
 
   //Store my array of li in an object
   storeArrInObject(myFavShowsArr);
 
   //Create array of li filled with content from the array of objects we have
   const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
-  console.log('newArrayItemsToPaint', newArrayItemsToPaint);
 
   // Paint li on my favourist list
   paintResults(newArrayItemsToPaint, favouritesListEl);
