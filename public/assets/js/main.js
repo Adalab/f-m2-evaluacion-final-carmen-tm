@@ -48,6 +48,17 @@ function paintResults(array, list) {
   }
 }
 
+function addResetBtn(title, item) {
+  //Create btn reset
+  const resetBtnEl = document.createElement('button');
+  resetBtnEl.classList.add('reset-btn');
+  const resetBtnContent = document.createTextNode('x');
+
+  resetBtnEl.appendChild(resetBtnContent);
+  resetBtnEl.setAttribute('data--id', title);
+  item.appendChild(resetBtnEl);
+}
+
 function createFavItem(a) {
   //Make a copy of the li element as favourite
   const favItemCloned = a.cloneNode(true);
@@ -58,14 +69,7 @@ function createFavItem(a) {
   favItemCloned.setAttribute('id', title);
   console.log('favItemCloned', favItemCloned);
 
-  //Create btn reset
-  const resetBtnEl = document.createElement('button');
-  resetBtnEl.classList.add('reset-btn');
-  const resetBtnContent = document.createTextNode('x');
-  resetBtnEl.appendChild(resetBtnContent);
-  resetBtnEl.setAttribute('data--id', title);
-
-  favItemCloned.appendChild(resetBtnEl);
+  addResetBtn(title, favItemCloned);
 
   return favItemCloned;
 }
@@ -222,6 +226,18 @@ function refreshPage() {
       const myUrl = object.url;
       const myTitle = object.title;
       console.log(myUrl, myTitle);
+
+      //With this info, I can create Items
+      const mySavedFav = createItem(myTitle, myUrl);
+      mySavedFav.classList.add('show-card--favourite');
+      mySavedFav.classList.add('preview--favourite');
+      console.log('mySavedFav', mySavedFav);
+
+      //And paint them in HTML
+      paintResultsReduced(mySavedFav, favouritesListEl);
+
+      //Add reset button
+      addResetBtn(myTitle, mySavedFav);
     }
   } else {
     console.log('caché is empty');
