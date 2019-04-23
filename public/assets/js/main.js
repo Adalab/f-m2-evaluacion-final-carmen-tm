@@ -52,7 +52,20 @@ function createFavItem(a) {
   //Make a copy of the li element as favourite
   const favItemCloned = a.cloneNode(true);
   favItemCloned.classList.add('preview--favourite');
-  //   console.log('favItemCloned', favItemCloned);
+  const title = favItemCloned.innerText;
+
+  //Create an id matching its title
+  favItemCloned.setAttribute('id', title);
+  console.log('favItemCloned', favItemCloned);
+
+  //Create btn reset
+  const resetBtnEl = document.createElement('button');
+  resetBtnEl.classList.add('reset-btn');
+  const resetBtnContent = document.createTextNode('x');
+  resetBtnEl.appendChild(resetBtnContent);
+  resetBtnEl.setAttribute('data--id', title);
+
+  favItemCloned.appendChild(resetBtnEl);
 
   return favItemCloned;
 }
@@ -73,12 +86,45 @@ function selectFavourite(a) {
   }
 }
 
+function handlerResetBtnClick(event) {
+  const resetBtnClicked = event.currentTarget;
+  const resetBtnClickedData = resetBtnClicked.getAttribute('data--id');
+  console.log('click', resetBtnClickedData);
+  // console.dir(resetBtnClicked);
+
+  // const itemForRemove = getElementById(resetBtnClickedData);
+  const itemForRemove = resetBtnClicked.parentNode;
+  console.log(itemForRemove);
+
+  favouritesListEl.removeChild(itemForRemove);
+
+  //To remove the item from my array of favourites I need to find its index
+  for (const element of myFavShowsArr) {
+    const titleFav = element.innerText;
+    const idFavRemove = itemForRemove.getAttribute('id');
+    if (titleFav === idFavRemove) {
+      console.log('quiero borrar este item');
+
+      const myIndex = myFavShowsArr.indexOf(element);
+      console.log(myIndex);
+      //The method splice() remove one element knowing it index. The inputs are the index point to start at and the number of elements to remove.
+      myFavShowsArr.splice(myIndex, 1);
+      console.log(myFavShowsArr);
+
+      ///MISSING JUST REMOVING THE FAV CLASS ON THE LIST OF RESULTS!!!
+    }
+  }
+  // console.log(itemForRemove);
+  // console.log(myFavShowsArr);
+  // console.log(myIndex);
+}
+
 function handlerCardsClick(event) {
   const selectedCard = event.currentTarget;
   //   console.log('selecting one card', selectedCard);
 
   //Add a special class for favourites
-  selectedCard.classList.toggle('show-card--favourite');
+  selectedCard.classList.add('show-card--favourite');
 
   selectFavourite(selectedCard);
 
@@ -87,10 +133,18 @@ function handlerCardsClick(event) {
 
   //Paint favourite results on its list
   paintResultsReduced(favItems, favouritesListEl);
+
+  const resetArrayBtnEl = document.querySelectorAll('.reset-btn');
+  // console.log(resetArrayBtnEl);
+
+  //Add listener to each reset butoton
+  for (const button of resetArrayBtnEl) {
+    button.addEventListener('click', handlerResetBtnClick);
+  }
 }
 
 //Handler for main button
-function handlerBtn() {
+function handlerBtnSearch() {
   //Save user input value
   const userValue = inputEl.value;
   //   console.log(userValue);
@@ -121,7 +175,7 @@ function handlerBtn() {
 }
 
 //Add lister to main button
-btnEl.addEventListener('click', handlerBtn);
+btnEl.addEventListener('click', handlerBtnSearch);
 
 //initial info: array of favourites
 const fakeArray = document.querySelectorAll('.fake-item');

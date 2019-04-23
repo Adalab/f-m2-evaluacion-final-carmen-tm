@@ -1,0 +1,11 @@
+.app-footer {
+  color: $color-primary;
+  background-color: $color-secondary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // position: absolute
+  height: 30px;
+  margin-top: auto;
+}

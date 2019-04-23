@@ -1,0 +1,15 @@
+.app-header {
+  // background-color: $color-primary;
+  background-image: linear-gradient(to right, $color-primary, $color-secondary);
+  color: $color-neutral-0;
+  height: 80px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-title {
+  font-size: $font-size-XL;
+  text-transform: uppercase;
+}

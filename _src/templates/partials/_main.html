@@ -1,32 +1,42 @@
-<section class="app-searcher">
-  <form method="get">
-    <input type="text" class="app-input" />
-    <button type="button" class="btn">Seach</button>
-  </form>
-</section>
-<section class="app-result">
-  <div class="favourites">
-    <h2 class="favourites__title">Mis series favoritas</h2>
-    <ul class="favourites__list"></ul>
-    <ul class="fake">
-      <li class="fake-item">
-        <img
-          src="https://via.placeholder.com/210x295/f4eded/9b1414/?text=fake1"
-          alt="fake1"
-        />
-        <p>fake1</p>
-      </li>
-      <li class="fake-item" id="fake2">
-        <img
-          src="https://via.placeholder.com/210x295/f4eded/9b1414/?text=fake2"
-          alt="fake2"
-        />
-        <p>fake2</p>
-      </li>
-    </ul>
+<main class="app-main-content">
+  <div class="app-searcher-favourites">
+    <section class="app-searcher">
+      <form method="get">
+        <label for="show" class="app-label">Nombre de tu serie</label>
+        <div class="flex-container">
+          <input type="text" class="app-input" name="show" />
+          <button type="button" class="btn">Buscar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="favourites">
+      <h2 class="favourites__title">Mis series favoritas</h2>
+      <ul class="favourites__list"></ul>
+      <!-- <button class="reset-btn" type="button">X</button> -->
+      <ul class="fake">
+        <li class="fake-item">
+          <img
+            src="https://via.placeholder.com/210x295/f4eded/9b1414/?text=fake1"
+            alt="fake1"
+          />
+          <p>fake1</p>
+        </li>
+        <li class="fake-item" id="fake2">
+          <img
+            src="https://via.placeholder.com/210x295/f4eded/9b1414/?text=fake2"
+            alt="fake2"
+          />
+          <p>fake2</p>
+        </li>
+      </ul>
+    </section>
   </div>
-  <div class="results">
-    <h2 class="results__title">Resultados de la búsqueda</h2>
-    <ul class="results__list"></ul>
-  </div>
-</section>
+
+  <section class="app-result">
+    <div class="results">
+      <h2 class="results__title">Resultados de la búsqueda</h2>
+      <ul class="results__list"></ul>
+    </div>
+  </section>
+</main>
