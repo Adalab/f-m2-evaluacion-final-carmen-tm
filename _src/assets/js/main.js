@@ -8,7 +8,10 @@ const btnEl = document.querySelector('.btn');
 const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
 
+//Empty array for storing favourites shows
 const myFavShowsArr = [];
+//Emtpy array of objects for storing in LS
+const favArrObjects = [];
 
 function createItem(a, b) {
   //Create li elements
@@ -45,6 +48,59 @@ function paintResults(array, list) {
     const itemsFilled = createItem(arrNames, arrUrls);
 
     list.appendChild(itemsFilled);
+  }
+}
+
+//LS: First, create array of objects
+function createArrayObjects(array) {
+  for (let i = 0; i < array.length; i++) {
+    const favImgEl = array[i].firstElementChild;
+    const favImgUrl = favImgEl.src;
+
+    const favTitleEl = array[i].lastElementChild;
+    const favTitleText = favTitleEl.innerHTML;
+    // console.log(favTitleText);
+
+    favArrObjects[i] = {
+      url: favImgUrl,
+      title: favTitleText
+    };
+    // console.log(favArrObjects[i]);
+  }
+}
+
+//LS: Secondly, store the array in LS
+function storeInLS(key, array) {
+  localStorage.setItem(key, JSON.stringify(array));
+}
+
+//LS: Finally, retrieve info from LS
+function refreshPage() {
+  //Check if LS has something
+  const infoSavedInLS = JSON.parse(localStorage.getItem('favArrObjects'));
+
+  if (infoSavedInLS) {
+    console.log('caché has something', infoSavedInLS);
+
+    for (const object of infoSavedInLS) {
+      const myUrl = object.url;
+      const myTitle = object.title;
+      console.log(myUrl, myTitle);
+
+      //With this info, I can create Items
+      const mySavedFav = createItem(myTitle, myUrl);
+      mySavedFav.classList.add('show-card--favourite');
+      mySavedFav.classList.add('preview--favourite');
+      console.log('mySavedFav', mySavedFav);
+
+      //And paint them in HTML
+      paintResultsReduced(mySavedFav, favouritesListEl);
+
+      //Add reset button
+      addResetBtn(myTitle, mySavedFav);
+    }
+  } else {
+    console.log('caché is empty');
   }
 }
 
@@ -137,9 +193,30 @@ function handlerCardsClick(event) {
 
   //Paint favourite results on its list
   paintResultsReduced(favItems, favouritesListEl);
+  console.log('favItems', favItems);
+  console.log('myFavShowsArr', myFavShowsArr);
 
   const resetArrayBtnEl = document.querySelectorAll('.reset-btn');
   // console.log(resetArrayBtnEl);
+
+  ///////////////
+  // LOCAL STORAGE
+
+  // console.log('array to be stored in LS', myFavShowsArr);
+
+  //initial info: array of favourites
+  // const fakeArray = document.querySelectorAll('.fake-item');
+  // console.log(fakeArray);
+
+  createArrayObjects(myFavShowsArr);
+
+  //I have an array of objects to be store in LS
+  // console.log('favArrObjects', favArrObjects);
+
+  storeInLS('favArrObjects', favArrObjects);
+
+  refreshPage();
+  ////////////////////
 
   //Add listener to each reset butoton
   for (const button of resetArrayBtnEl) {
@@ -180,67 +257,3 @@ function handlerBtnSearch() {
 
 //Add lister to main button
 btnEl.addEventListener('click', handlerBtnSearch);
-
-////////////////////////////////////////
-// LOCAL STORAGE
-
-//initial info: array of favourites
-const fakeArray = document.querySelectorAll('.fake-item');
-// console.log(fakeArray);
-
-const favArrObjects = [];
-
-for (let i = 0; i < fakeArray.length; i++) {
-  const favImgEl = fakeArray[i].firstElementChild;
-  const favImgUrl = favImgEl.src;
-
-  const favTitleEl = fakeArray[i].lastElementChild;
-  const favTitleText = favTitleEl.innerHTML;
-  // console.log(favTitleText);
-
-  favArrObjects[i] = {
-    url: favImgUrl,
-    title: favTitleText
-  };
-  // console.log(favArrObjects[i]);
-}
-
-//I have an array of objects to be store in LS
-console.log('favArrObjects', favArrObjects);
-
-//Store our array in LS
-function storeInLS(a, b) {
-  localStorage.setItem(a, JSON.stringify(b));
-}
-storeInLS('favArrObjects', favArrObjects);
-
-//Retrieve info from LS
-function refreshPage() {
-  //Check if LS has something
-  const infoSavedInLS = JSON.parse(localStorage.getItem('favArrObjects'));
-
-  if (infoSavedInLS) {
-    console.log('caché has something', infoSavedInLS);
-
-    for (const object of infoSavedInLS) {
-      const myUrl = object.url;
-      const myTitle = object.title;
-      console.log(myUrl, myTitle);
-
-      //With this info, I can create Items
-      const mySavedFav = createItem(myTitle, myUrl);
-      mySavedFav.classList.add('show-card--favourite');
-      mySavedFav.classList.add('preview--favourite');
-      console.log('mySavedFav', mySavedFav);
-
-      //And paint them in HTML
-      paintResultsReduced(mySavedFav, favouritesListEl);
-
-      //Add reset button
-      addResetBtn(myTitle, mySavedFav);
-    }
-  } else {
-    console.log('caché is empty');
-  }
-}
-refreshPage();
