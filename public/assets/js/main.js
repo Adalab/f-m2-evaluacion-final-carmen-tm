@@ -22,6 +22,7 @@ function createItemsFromSearch(array) {
   resultsArr = [];
   //Iterate the api results to create items with content
   for (const element of array) {
+    const idShow = element.show.id;
     const arrNames = element.show.name;
     let arrUrls = '';
 
@@ -44,7 +45,7 @@ function createItemsFromSearch(array) {
     contentItemTitleEl.appendChild(contentItemTitleText);
 
     //Add id to make easier further instructions
-    newItemEl.setAttribute('id', arrNames);
+    newItemEl.setAttribute('id', idShow);
 
     newItemEl.appendChild(contentItemImgEl);
     newItemEl.appendChild(contentItemTitleEl);
@@ -52,7 +53,7 @@ function createItemsFromSearch(array) {
     //Fill empty array with all items:
     resultsArr.push(newItemEl);
   }
-  // console.log('my array of results is working', 'resultsArr', resultsArr);
+  console.log('my array of results is working', 'resultsArr', resultsArr);
   return resultsArr;
 }
 
@@ -146,6 +147,20 @@ function refreshPage() {
   }
 }
 
+function handlerResetBtnClick(event) {
+  const resetBtnClicked = event.currentTarget;
+  // console.log('click');
+
+  const itemForRemove = resetBtnClicked.parentNode;
+  console.log(itemForRemove);
+
+  //Wanto to remove this item from my Array of objects and so it will be removed from LS, favourist list , etc
+
+  // find
+
+  //   storeArrInObject(myFavShowsArr);
+}
+
 function addResetBtn(title, myItem) {
   //Create btn reset
   const resetBtnEl = document.createElement('button');
@@ -154,10 +169,13 @@ function addResetBtn(title, myItem) {
 
   resetBtnEl.appendChild(resetBtnContent);
   resetBtnEl.setAttribute('data--id', title);
-  console.log(resetBtnEl);
-  console.log(myItem);
+  // console.log(resetBtnEl);
+  // console.log(myItem);
 
   myItem.appendChild(resetBtnEl);
+
+  //Add listener
+  resetBtnEl.addEventListener('click', handlerResetBtnClick);
 }
 
 //Add favourite functionlity on click
@@ -177,7 +195,7 @@ function handlerCardsFavClick(event) {
 
     //Store my array of li in an object
     storeArrInObject(myFavShowsArr);
-    console.log('favShowsObjectsArray', favShowsObjectsArray);
+    // console.log('favShowsObjectsArray', favShowsObjectsArray);
 
     //Create array of li filled with content from the array of objects we have
     const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
