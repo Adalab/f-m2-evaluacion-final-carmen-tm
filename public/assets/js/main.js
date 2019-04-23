@@ -75,12 +75,15 @@ function paintResults(array, list) {
 
 function storeArrInObject(array) {
   for (let i = 0; i < array.length; i++) {
+    // console.dir(array);
     const favImgEl = array[i].firstElementChild;
     const favImgUrl = favImgEl.src;
 
-    const favTitleEl = array[i].lastElementChild;
+    // const favTitleEl = array[i].lastElementChild;
+    const favTitleEl = favImgEl.nextElementSibling;
+    console.log(favTitleEl);
     const favTitleText = favTitleEl.innerHTML;
-    // console.log(favTitleText);
+    console.log(favTitleText);
 
     favShowsObjectsArray[i] = {
       url: favImgUrl,
@@ -110,9 +113,13 @@ function createItemsFromObjArr(array) {
     prevItemEl.appendChild(prevItemImgEl);
     prevItemEl.appendChild(prevItemTitleEl);
     prevItemEl.classList.add('preview--favourite');
+
+    //Add reset button to each item
+    addResetBtn(name, prevItemEl);
+
     arrItemsToPaint.push(prevItemEl);
   }
-  // console.log(arrItemsToPaint);
+  console.log(arrItemsToPaint);
   return arrItemsToPaint;
 }
 
@@ -139,7 +146,7 @@ function refreshPage() {
   }
 }
 
-function addResetBtn(title, myArray) {
+function addResetBtn(title, myItem) {
   //Create btn reset
   const resetBtnEl = document.createElement('button');
   resetBtnEl.classList.add('reset-btn');
@@ -148,11 +155,9 @@ function addResetBtn(title, myArray) {
   resetBtnEl.appendChild(resetBtnContent);
   resetBtnEl.setAttribute('data--id', title);
   console.log(resetBtnEl);
-  console.log(myArray);
-  for (const item of myArray) {
-    item.appendChild(resetBtnEl);
-  }
-  // myItemEl.appendChild(resetBtnEl);
+  console.log(myItem);
+
+  myItem.appendChild(resetBtnEl);
 }
 
 //Add favourite functionlity on click
@@ -180,13 +185,6 @@ function handlerCardsFavClick(event) {
 
     // Paint li on my favourist list
     paintResults(newArrayItemsToPaint, favouritesListEl);
-
-    //Add reset button to each item
-    console.log(selectedCard);
-    const myId = selectedCard.getAttribute('id');
-    console.log(myId);
-    console.log(newArrayItemsToPaint);
-    addResetBtn(myId, newArrayItemsToPaint);
 
     //Store my favShowsObjectsArray in LS
     storeInLS('myObject', favShowsObjectsArray);
