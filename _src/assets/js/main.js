@@ -120,6 +120,23 @@ function storeInLS(key, array) {
   localStorage.setItem(key, JSON.stringify(array));
 }
 
+function refreshPage() {
+  //Check if LS has something
+  const infoSavedInLS = JSON.parse(localStorage.getItem('myObject'));
+
+  if (infoSavedInLS) {
+    console.log('caché has something', infoSavedInLS);
+
+    const savedItemToPaint = createItemsFromObjArr(infoSavedInLS);
+    console.log('savedItemToPaint', savedItemToPaint);
+
+    // Paint li on my favourist list
+    paintResults(savedItemToPaint, favouritesListEl);
+  } else {
+    console.log('caché is empty');
+  }
+}
+
 //Add favourite functionlity on click
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
@@ -185,3 +202,6 @@ function handlerBtnSearch() {
 
 //Add lister to main Search button
 btnEl.addEventListener('click', handlerBtnSearch);
+
+//Retrieve info from LS when refreshing
+refreshPage();
