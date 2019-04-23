@@ -145,35 +145,11 @@ function refreshPage() {
 
 function handlerResetBtnClick(event) {
   const resetBtnClicked = event.currentTarget;
-  const resetBtnClickedData = resetBtnClicked.getAttribute('data--id');
-  console.log('click', resetBtnClickedData);
 
   const itemForRemove = resetBtnClicked.parentNode;
 
   //Removing from the painted list
   favouritesListEl.removeChild(itemForRemove);
-
-  console.log(myFavShowsArr.length);
-  //To remove the item from my array of favourites objects I need to find its index first
-  for (let i = 0; i < myFavShowsArr.length; i++) {
-    // console.log(myFavShowsArr);
-    console.log(resetBtnClickedData);
-    const idOfArray = myFavShowsArr[i].id;
-    console.log(idOfArray);
-
-    // if (resetBtnClickedData === idOfArray) {
-    //   console.log('quiero borrar este item', i);
-    //   //The method splice() remove one element knowing it index. The inputs are the index point to start at and the number of elements to remove.
-    //   myFavShowsArr.splice(i, 1);
-    //   console.log(myFavShowsArr);
-
-    //   //Store my array of li in an object
-    //   storeArrInObject(myFavShowsArr);
-
-    //   //Store my favShowsObjectsArray in LS
-    //   storeInLS('myObject', myFavShowsArr);
-    // }
-  }
 }
 
 function addResetBtn(id, myItem) {
