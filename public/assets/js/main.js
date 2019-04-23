@@ -12,7 +12,7 @@ const favouritesListEl = document.querySelector('.favourites__list');
 //FIRST Empty array for items results from search
 let resultsArr = [];
 //Empty array for storing favourites shows
-const myFavShowsArr = [];
+let myFavShowsArr = [];
 //Emtpy array of objects for paiting in favourit list and storing in LS
 const favShowsObjectsArray = [];
 
@@ -130,6 +130,8 @@ function refreshPage() {
     const savedItemToPaint = createItemsFromObjArr(infoSavedInLS);
     console.log('savedItemToPaint', savedItemToPaint);
 
+    myFavShowsArr = savedItemToPaint;
+
     // Paint li on my favourist list
     paintResults(savedItemToPaint, favouritesListEl);
   } else {
@@ -143,6 +145,7 @@ function handlerCardsFavClick(event) {
 
   //Check if the object is already a favourite or not by looking at its class
   const testFav = selectedCard.classList.contains('show-card--favourite');
+  console.log(testFav);
   if (!testFav) {
     //Add a special class for favourites
     selectedCard.classList.add('show-card--favourite');
