@@ -25,9 +25,8 @@ button {
 
 // General settings:
 body {
-  min-height: 100vh;
-  // height: 100%;
-  // position: relative;
+  // min-height: 100vh;
+  // background-color: yellow;
 
   font-family: sans-serif;
   font-size: $font-size-M;
@@ -39,15 +38,11 @@ body {
   flex-direction: column;
 }
 
-// .body-container {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-around;
-// }
-
 .page-container {
+  // background-color: pink;
+  min-height: 100vh;
   @media all and (min-width: 1200px) {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
   }
 }

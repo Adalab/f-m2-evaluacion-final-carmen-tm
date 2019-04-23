@@ -22,7 +22,6 @@ button {
 }
 
 body {
-  min-height: 100vh;
   font-family: sans-serif;
   font-size: 14px;
   color: #9b9b9b;
@@ -35,6 +34,10 @@ body {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+
+.page-container {
+  min-height: 100vh;
 }
 
 .app-header {
@@ -90,7 +93,7 @@ body {
 
 .app-input {
   height: 30px;
-  width: 70%;
+  width: 60%;
   padding-left: 5px;
   margin-bottom: 10px;
   border-bottom: 1px solid crimson;
@@ -213,7 +216,7 @@ body {
 
 @media all and (min-width: 1200px) {
   .page-container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
   }
 }
