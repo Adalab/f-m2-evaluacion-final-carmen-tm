@@ -120,7 +120,7 @@ function createItemsFromObjArr(array) {
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
 
-  //Check if the object has the class to add it
+  //Check if the object is already a favourite or not by looking at its class
   const testFav = selectedCard.classList.contains('show-card--favourite');
   if (!testFav) {
     //Add a special class for favourites
