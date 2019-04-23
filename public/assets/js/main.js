@@ -1,15 +1,13 @@
 /* eslint-disable no-console */
 'use strict';
 
-//Get elements
 const inputEl = document.querySelector('.app-input');
 const btnEl = document.querySelector('.btn');
 
-//Get list elements to fill with items
 const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
 
-//FIRST Empty array for items results from search
+//Empty array for items results from search
 let resultsArr = [];
 //Empty array for storing favourites shows
 let myFavShowsArr = [];
@@ -20,7 +18,7 @@ const favShowsObjectsArray = [];
 function createItemsFromSearch(array) {
   //Reset array
   resultsArr = [];
-  //Iterate the api results to create items with content
+
   for (const element of array) {
     const idShow = element.show.id;
     const arrNames = element.show.name;
@@ -53,11 +51,11 @@ function createItemsFromSearch(array) {
     //Fill empty array with all items:
     resultsArr.push(newItemEl);
   }
-  // console.log('my array of results is working', 'resultsArr', resultsArr);
+
   return resultsArr;
 }
 
-//SECOND Add class
+//Add a class to each item on a array
 function appendClass(arrayItems, myClass) {
   for (const item of arrayItems) {
     item.classList.add(myClass);
@@ -65,7 +63,7 @@ function appendClass(arrayItems, myClass) {
   return arrayItems;
 }
 
-//THIRD Append each li to its list
+//Append each li to its list
 function paintResults(array, list) {
   // Reset list content
   list.innerHTML = '';
@@ -76,11 +74,9 @@ function paintResults(array, list) {
 
 function storeArrInObject(array) {
   for (let i = 0; i < array.length; i++) {
-    // console.dir(array);
     const favImgEl = array[i].firstElementChild;
     const favImgUrl = favImgEl.src;
 
-    // const favTitleEl = array[i].lastElementChild;
     const favTitleEl = favImgEl.nextElementSibling;
     console.log(favTitleEl);
     const favTitleText = favTitleEl.innerHTML;
@@ -149,16 +145,9 @@ function refreshPage() {
 
 function handlerResetBtnClick(event) {
   const resetBtnClicked = event.currentTarget;
-  // console.log('click');
 
   const itemForRemove = resetBtnClicked.parentNode;
   console.log(itemForRemove);
-
-  //Wanto to remove this item from my Array of objects and so it will be removed from LS, favourist list , etc
-
-  // find
-
-  //   storeArrInObject(myFavShowsArr);
 }
 
 function addResetBtn(title, myItem) {
@@ -169,8 +158,6 @@ function addResetBtn(title, myItem) {
 
   resetBtnEl.appendChild(resetBtnContent);
   resetBtnEl.setAttribute('data--id', title);
-  // console.log(resetBtnEl);
-  // console.log(myItem);
 
   myItem.appendChild(resetBtnEl);
 
@@ -181,7 +168,6 @@ function addResetBtn(title, myItem) {
 //Add favourite functionlity on click
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
-  // console.log(selectedCard);
   const idFav = selectedCard.id;
   console.log(idFav);
   console.log(myFavShowsArr);
@@ -190,7 +176,7 @@ function handlerCardsFavClick(event) {
     console.log(myFavShowsArr);
     //If element is already there, abort
     if (idFav === card.id) {
-      console.log('id repetido');
+      card.classList.add('show-card--favourite');
       return;
     } else {
       console.log('id nuevo');
@@ -205,7 +191,6 @@ function handlerCardsFavClick(event) {
 
   //Store my array of li in an object
   storeArrInObject(myFavShowsArr);
-  // console.log('favShowsObjectsArray', favShowsObjectsArray);
 
   //Create array of li filled with content from the array of objects we have
   const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
@@ -218,43 +203,11 @@ function handlerCardsFavClick(event) {
   storeInLS('myObject', favShowsObjectsArray);
 }
 
-// //If the show is already there, dont push it!
-// for (const card of myFavShowsArr) {
-//   console.log(myFavShowsArr);
-//   if (idFav === card.id) {
-//     console.log('id repetido');
-//     // return;
-//   } else {
-//     console.log('id nuevo');
-//     //Add a special class for favourites
-//     selectedCard.classList.add('show-card--favourite');
-
-//     //Store in my favArray empty array
-//     myFavShowsArr.push(selectedCard);
-//     console.log('myFavShowsArr', myFavShowsArr);
-
-//     //Store my array of li in an object
-//     storeArrInObject(myFavShowsArr);
-//     // console.log('favShowsObjectsArray', favShowsObjectsArray);
-
-//     //Create array of li filled with content from the array of objects we have
-//     const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
-//     console.log('newArrayItemsToPaint', newArrayItemsToPaint);
-
-//     // Paint li on my favourist list
-//     paintResults(newArrayItemsToPaint, favouritesListEl);
-
-//     //Store my favShowsObjectsArray in LS
-//     storeInLS('myObject', favShowsObjectsArray);
-//   }
-// }
-// }
-
 //Handler for main button
 function handlerBtnSearch() {
   //Save user input value
   const userValue = inputEl.value;
-  //   console.log(userValue);
+
   //Connect to API
   fetch(`http://api.tvmaze.com/search/shows?q=${userValue}`)
     .then(function(response) {
@@ -266,7 +219,6 @@ function handlerBtnSearch() {
     .then(function(data) {
       //The response is an array of objects
       const arrShows = data;
-      // console.log('arrShows', arrShows);
 
       //FIRST Create li items from data
       const myItems = createItemsFromSearch(arrShows);
