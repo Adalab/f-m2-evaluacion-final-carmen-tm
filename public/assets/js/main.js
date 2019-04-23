@@ -13,8 +13,8 @@ const favouritesListEl = document.querySelector('.favourites__list');
 let resultsArr = [];
 //Empty array for storing favourites shows
 const myFavShowsArr = [];
-//Emtpy array of objects for storing in LS
-// const favArrObjects = [];
+//Emtpy array of objects for paiting in favourit list and storing in LS
+const favShowsObject = [];
 
 function createItemsFromSearch(array) {
   //Reset array
@@ -70,20 +70,22 @@ function paintResults(array, list) {
   }
 }
 
-// function cloneItems(array, myClass) {
-//   let favItemsClonedArray = [];
-//   for (const item of array) {
-//     const favItemcloned = item.cloneNode(true);
-//     favItemcloned.classList.add(myClass);
-//     favItemsClonedArray.push(favItemcloned);
-//   }
-//   return favItemsClonedArray;
-// }
+function storeArrInObject(array) {
+  for (let i = 0; i < array.length; i++) {
+    const favImgEl = array[i].firstElementChild;
+    const favImgUrl = favImgEl.src;
 
-// function cloneArray(array) {
-//   //The method slice() with a 0 as first argument create a clone of the original array
-//   return array.slice(0);
-// }
+    const favTitleEl = array[i].lastElementChild;
+    const favTitleText = favTitleEl.innerHTML;
+    // console.log(favTitleText);
+
+    favShowsObject[i] = {
+      url: favImgUrl,
+      title: favTitleText
+    };
+  }
+}
+
 //Add favourite functionlity on click
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
@@ -95,15 +97,15 @@ function handlerCardsFavClick(event) {
   myFavShowsArr.push(selectedCard);
   console.log('myFavShowsArr', myFavShowsArr);
 
-  //Clone items to add them on my favourist list and add them a class
-  // const favItemsCloned = cloneItems(myFavShowsArr, 'preview--favourite');
-  // console.log(favItemsCloned);
+  //Store my array of li in an object
+  storeArrInObject(myFavShowsArr);
+  console.log('favShowsObject', favShowsObject);
 
-  const myFavShowsArrCloned = cloneArray(myFavShowsArr);
-  console.log(myFavShowsArr);
+  // const myFavShowsArrCloned = cloneArray(myFavShowsArr);
+  // console.log(myFavShowsArr);
 
   // THIRD Paint li on my favourist list
-  paintResults(myFavShowsArrCloned, favouritesListEl);
+  // paintResults(myFavShowsArrCloned, favouritesListEl);
 }
 
 //Handler for main button
