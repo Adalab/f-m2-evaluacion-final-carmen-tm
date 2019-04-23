@@ -110,11 +110,24 @@ body {
 .favourites__title {
   color: crimson;
   font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.favourites__description {
+  margin-bottom: 5px;
+}
+
+.favourites__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .preview--favourite {
   border: 3px solid black;
-  width: 100px;
+  width: 80px;
 }
 
 .preview--favourite img {
@@ -167,6 +180,7 @@ body {
   background-color: crimson;
   padding: 10px;
   margin: 5px;
+  cursor: pointer;
 }
 
 .show-card--favourite {

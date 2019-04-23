@@ -40,16 +40,26 @@
 
 .favourites {
   margin-top: 20px;
+
   // background-color: blue;
   &__title {
     color: $color-primary;
     font-size: $font-size-L;
+    margin-bottom: 5px;
+  }
+  &__description {
+    margin-bottom: 5px;
+  }
+  &__list {
+    display: flex;
+    // flex: row wrap;
+    flex-wrap: wrap;
   }
 }
 
 .preview--favourite {
   border: 3px solid black;
-  width: 100px;
+  width: 80px;
   // position: relative;
 
   img {
@@ -112,6 +122,7 @@
   background-color: $color-primary;
   padding: 10px;
   margin: 5px;
+  cursor: pointer;
 }
 
 .show-card--favourite {
