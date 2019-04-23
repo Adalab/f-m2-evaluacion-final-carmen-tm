@@ -177,12 +177,14 @@ function handlerBtnSearch() {
 //Add lister to main button
 btnEl.addEventListener('click', handlerBtnSearch);
 
+////////////////////////////////////////
+// LOCAL STORAGE
+
 //initial info: array of favourites
 const fakeArray = document.querySelectorAll('.fake-item');
-console.log(fakeArray);
+// console.log(fakeArray);
 
 const favArrObjects = [];
-const myObject = {};
 
 for (let i = 0; i < fakeArray.length; i++) {
   const favImgEl = fakeArray[i].firstElementChild;
@@ -190,16 +192,17 @@ for (let i = 0; i < fakeArray.length; i++) {
 
   const favTitleEl = fakeArray[i].lastElementChild;
   const favTitleText = favTitleEl.innerHTML;
+  // console.log(favTitleText);
 
-  myObject.url = favImgUrl;
-  myObject.title = favTitleText;
-  // console.log(myObject);
-
-  favArrObjects.push(myObject);
+  favArrObjects[i] = {
+    url: favImgUrl,
+    title: favTitleText
+  };
+  // console.log(favArrObjects[i]);
 }
 
 //I have an array of objects to be store in LS
-console.log(favArrObjects);
+console.log('favArrObjects', favArrObjects);
 
 //Store our array in LS
 function storeInLS(a, b) {
