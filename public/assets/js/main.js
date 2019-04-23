@@ -139,6 +139,22 @@ function refreshPage() {
   }
 }
 
+function addResetBtn(title, myArray) {
+  //Create btn reset
+  const resetBtnEl = document.createElement('button');
+  resetBtnEl.classList.add('reset-btn');
+  const resetBtnContent = document.createTextNode('x');
+
+  resetBtnEl.appendChild(resetBtnContent);
+  resetBtnEl.setAttribute('data--id', title);
+  console.log(resetBtnEl);
+  console.log(myArray);
+  for (const item of myArray) {
+    item.appendChild(resetBtnEl);
+  }
+  // myItemEl.appendChild(resetBtnEl);
+}
+
 //Add favourite functionlity on click
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
@@ -159,11 +175,18 @@ function handlerCardsFavClick(event) {
     console.log('favShowsObjectsArray', favShowsObjectsArray);
 
     //Create array of li filled with content from the array of objects we have
-    const newItemToPaint = createItemsFromObjArr(favShowsObjectsArray);
-    console.log('newItemToPaint', newItemToPaint);
+    const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
+    console.log('newArrayItemsToPaint', newArrayItemsToPaint);
 
     // Paint li on my favourist list
-    paintResults(newItemToPaint, favouritesListEl);
+    paintResults(newArrayItemsToPaint, favouritesListEl);
+
+    //Add reset button to each item
+    console.log(selectedCard);
+    const myId = selectedCard.getAttribute('id');
+    console.log(myId);
+    console.log(newArrayItemsToPaint);
+    addResetBtn(myId, newArrayItemsToPaint);
 
     //Store my favShowsObjectsArray in LS
     storeInLS('myObject', favShowsObjectsArray);
