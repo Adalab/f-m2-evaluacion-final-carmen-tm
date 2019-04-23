@@ -9,19 +9,18 @@ const btnEl = document.querySelector('.btn');
 const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
 
-//Empty array for items results from search
+//FIRST Empty array for items results from search
 let resultsArr = [];
 //Empty array for storing favourites shows
 const myFavShowsArr = [];
 //Emtpy array of objects for storing in LS
-const favArrObjects = [];
+// const favArrObjects = [];
 
 function createItemsFromSearch(array) {
   //Reset array
   resultsArr = [];
   //Iterate the api results to create items with content
   for (const element of array) {
-    // console.log(array);
     const arrNames = element.show.name;
     let arrUrls = '';
 
@@ -30,11 +29,9 @@ function createItemsFromSearch(array) {
     } else {
       arrUrls = element.show.image.medium;
     }
-    // console.log(arrNames, arrUrls);
 
     //Create li elements
     const newItemEl = document.createElement('li');
-    newItemEl.classList.add('show-card');
 
     //Create content node
     const contentItemImgEl = document.createElement('img');
@@ -54,15 +51,59 @@ function createItemsFromSearch(array) {
     //Fill empty array with all items:
     resultsArr.push(newItemEl);
   }
-  // console.log('my array of results is working', resultsArr);
+  console.log('my array of results is working', 'resultsArr', resultsArr);
   return resultsArr;
 }
 
-//Append each li to its list
+//SECOND Add class
+function appendClass(arrayItems, myClass) {
+  for (const item of arrayItems) {
+    item.classList.add(myClass);
+  }
+  return arrayItems;
+}
+
+//THIRD Append each li to its list
 function paintResults(array, list) {
   for (const element of array) {
     list.appendChild(element);
   }
+}
+
+// function cloneItems(array, myClass) {
+//   let favItemsClonedArray = [];
+//   for (const item of array) {
+//     const favItemcloned = item.cloneNode(true);
+//     favItemcloned.classList.add(myClass);
+//     favItemsClonedArray.push(favItemcloned);
+//   }
+//   return favItemsClonedArray;
+// }
+
+// function cloneArray(array) {
+//   //The method slice() with a 0 as first argument create a clone of the original array
+//   return array.slice(0);
+// }
+//Add favourite functionlity on click
+function handlerCardsFavClick(event) {
+  const selectedCard = event.currentTarget;
+
+  //Add a special class for favourites
+  selectedCard.classList.add('show-card--favourite');
+
+  //Store in my favArray empty array
+  myFavShowsArr.push(selectedCard);
+  console.log('myFavShowsArr', myFavShowsArr);
+
+  //Clone items to add them on my favourist list and add them a class
+  // const favItemsCloned = cloneItems(myFavShowsArr, 'preview--favourite');
+  // console.log(favItemsCloned);
+
+  const myFavShowsArrCloned = cloneArray(myFavShowsArr);
+  console.log(myFavShowsArr);
+
+  // THIRD Paint li on my favourist list
+  paintResults(myFavShowsArrCloned, favouritesListEl);
 }
 
 //Handler for main button
@@ -81,21 +122,23 @@ function handlerBtnSearch() {
     .then(function(data) {
       //The response is an array of objects
       const arrShows = data;
-      console.log('arrShows', arrShows);
+      // console.log('arrShows', arrShows);
 
       //Reset results list on every search
       resultListEl.innerHTML = '';
 
       //FIRST Create li items from data
-      createItemsFromSearch(arrShows);
-      //SECOND Paint li results
-      paintResults(resultsArr, resultListEl);
+      const myItems = createItemsFromSearch(arrShows);
+      //SECOND add card class
+      const myItemsWithClass = appendClass(myItems, 'show-card');
+      //THIRD Paint li results
+      paintResults(myItemsWithClass, resultListEl);
 
-      //Add listener to each card from the results to add Favourites functionality
-      // const resultsCardEl = document.querySelectorAll('.show-card');
-      // for (const card of resultsCardEl) {
-      //   card.addEventListener('click', handlerCardsFavClick);
-      // }
+      // Add listener to each card from the results to add Favourites functionality
+      const resultsCardEl = document.querySelectorAll('.show-card');
+      for (const card of resultsCardEl) {
+        card.addEventListener('click', handlerCardsFavClick);
+      }
     });
 }
 
