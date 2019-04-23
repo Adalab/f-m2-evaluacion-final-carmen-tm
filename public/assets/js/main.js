@@ -59,6 +59,7 @@ function createItemsFromSearch(array) {
 function appendClass(arrayItems, myClass) {
   for (const item of arrayItems) {
     item.classList.add(myClass);
+    item.setAttribute('title', 'Añade a tu lista de favoritos');
   }
   return arrayItems;
 }
@@ -78,13 +79,14 @@ function storeArrInObject(array) {
     const favImgUrl = favImgEl.src;
 
     const favTitleEl = favImgEl.nextElementSibling;
-    console.log(favTitleEl);
     const favTitleText = favTitleEl.innerHTML;
-    console.log(favTitleText);
+
+    const favId = array[i].getAttribute('id');
 
     favShowsObjectsArray[i] = {
       url: favImgUrl,
-      title: favTitleText
+      title: favTitleText,
+      id: favId
     };
   }
 }
@@ -94,6 +96,7 @@ function createItemsFromObjArr(array) {
   for (const item of array) {
     const name = item.title;
     const url = item.url;
+    const id = item.id;
 
     //Create elements and contents
     const prevItemEl = document.createElement('li');
@@ -109,14 +112,14 @@ function createItemsFromObjArr(array) {
     //Append filled elements to my item
     prevItemEl.appendChild(prevItemImgEl);
     prevItemEl.appendChild(prevItemTitleEl);
+    prevItemEl.setAttribute('id', id);
     prevItemEl.classList.add('preview--favourite');
 
     //Add reset button to each item
-    addResetBtn(name, prevItemEl);
+    addResetBtn(id, prevItemEl);
 
     arrItemsToPaint.push(prevItemEl);
   }
-  console.log(arrItemsToPaint);
   return arrItemsToPaint;
 }
 
@@ -129,10 +132,7 @@ function refreshPage() {
   const infoSavedInLS = JSON.parse(localStorage.getItem('myObject'));
 
   if (infoSavedInLS) {
-    console.log('caché has something', infoSavedInLS);
-
     const savedItemToPaint = createItemsFromObjArr(infoSavedInLS);
-    console.log('savedItemToPaint', savedItemToPaint);
 
     myFavShowsArr = savedItemToPaint;
 
@@ -145,19 +145,47 @@ function refreshPage() {
 
 function handlerResetBtnClick(event) {
   const resetBtnClicked = event.currentTarget;
+  const resetBtnClickedData = resetBtnClicked.getAttribute('data--id');
+  console.log('click', resetBtnClickedData);
 
   const itemForRemove = resetBtnClicked.parentNode;
-  console.log(itemForRemove);
+
+  //Removing from the painted list
+  favouritesListEl.removeChild(itemForRemove);
+
+  console.log(myFavShowsArr.length);
+  //To remove the item from my array of favourites objects I need to find its index first
+  for (let i = 0; i < myFavShowsArr.length; i++) {
+    // console.log(myFavShowsArr);
+    console.log(resetBtnClickedData);
+    const idOfArray = myFavShowsArr[i].id;
+    console.log(idOfArray);
+
+    // if (resetBtnClickedData === idOfArray) {
+    //   console.log('quiero borrar este item', i);
+    //   //The method splice() remove one element knowing it index. The inputs are the index point to start at and the number of elements to remove.
+    //   myFavShowsArr.splice(i, 1);
+    //   console.log(myFavShowsArr);
+
+    //   //Store my array of li in an object
+    //   storeArrInObject(myFavShowsArr);
+
+    //   //Store my favShowsObjectsArray in LS
+    //   storeInLS('myObject', myFavShowsArr);
+    // }
+  }
 }
 
-function addResetBtn(title, myItem) {
+function addResetBtn(id, myItem) {
   //Create btn reset
   const resetBtnEl = document.createElement('button');
   resetBtnEl.classList.add('reset-btn');
+  resetBtnEl.setAttribute('title', 'Borra de favoritos');
+
   const resetBtnContent = document.createTextNode('x');
 
   resetBtnEl.appendChild(resetBtnContent);
-  resetBtnEl.setAttribute('data--id', title);
+  resetBtnEl.setAttribute('data--id', id);
 
   myItem.appendChild(resetBtnEl);
 
@@ -169,17 +197,16 @@ function addResetBtn(title, myItem) {
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
   const idFav = selectedCard.id;
-  console.log(idFav);
-  console.log(myFavShowsArr);
+  // console.log(idFav);
+  // console.log(myFavShowsArr);
 
   for (const card of myFavShowsArr) {
-    console.log(myFavShowsArr);
     //If element is already there, abort
     if (idFav === card.id) {
       card.classList.add('show-card--favourite');
       return;
     } else {
-      console.log('id nuevo');
+      // console.log('id nuevo');
     }
   }
   //Add a special class for favourites
@@ -187,14 +214,13 @@ function handlerCardsFavClick(event) {
 
   //Store in my favArray empty array
   myFavShowsArr.push(selectedCard);
-  console.log('myFavShowsArr', myFavShowsArr);
+  // console.log(myFavShowsArr);
 
   //Store my array of li in an object
   storeArrInObject(myFavShowsArr);
 
   //Create array of li filled with content from the array of objects we have
   const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
-  console.log('newArrayItemsToPaint', newArrayItemsToPaint);
 
   // Paint li on my favourist list
   paintResults(newArrayItemsToPaint, favouritesListEl);
@@ -222,6 +248,7 @@ function handlerBtnSearch() {
 
       //FIRST Create li items from data
       const myItems = createItemsFromSearch(arrShows);
+
       //SECOND add card class
       const myItemsWithClass = appendClass(myItems, 'show-card');
       //THIRD Paint li results
