@@ -16,14 +16,6 @@ let myFavShowsArr = [];
 //Emtpy array of objects for paiting in favourit list and storing in LS
 const favShowsObjectsArray = [];
 
-function testId(myId, array) {
-  for (const element of array) {
-    const ids = element.getAttribute('id');
-    console.log('ids', ids);
-    console.log('myId', myId);
-  }
-}
-
 //Create items from the API result
 function createItemsFromSearch(array) {
   //Reset array
