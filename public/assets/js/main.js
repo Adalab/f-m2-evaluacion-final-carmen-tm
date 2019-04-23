@@ -192,7 +192,7 @@ function handlerCardsClick(event) {
   const favItems = createFavItem(selectedCard);
 
   //Paint favourite results on its list
-  paintResultsReduced(favItems, favouritesListEl);
+  // paintResultsReduced(favItems, favouritesListEl);
   console.log('favItems', favItems);
   console.log('myFavShowsArr', myFavShowsArr);
 
