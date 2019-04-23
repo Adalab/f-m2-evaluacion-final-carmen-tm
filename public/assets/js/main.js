@@ -81,9 +81,12 @@ function storeArrInObject(array) {
     const favTitleEl = favImgEl.nextElementSibling;
     const favTitleText = favTitleEl.innerHTML;
 
+    const favId = array[i].getAttribute('id');
+
     favShowsObjectsArray[i] = {
       url: favImgUrl,
-      title: favTitleText
+      title: favTitleText,
+      id: favId
     };
   }
 }
@@ -93,6 +96,7 @@ function createItemsFromObjArr(array) {
   for (const item of array) {
     const name = item.title;
     const url = item.url;
+    const id = item.id;
 
     //Create elements and contents
     const prevItemEl = document.createElement('li');
@@ -108,10 +112,11 @@ function createItemsFromObjArr(array) {
     //Append filled elements to my item
     prevItemEl.appendChild(prevItemImgEl);
     prevItemEl.appendChild(prevItemTitleEl);
+    prevItemEl.setAttribute('id', id);
     prevItemEl.classList.add('preview--favourite');
 
     //Add reset button to each item
-    addResetBtn(name, prevItemEl);
+    addResetBtn(id, prevItemEl);
 
     arrItemsToPaint.push(prevItemEl);
   }
@@ -140,19 +145,20 @@ function refreshPage() {
 
 function handlerResetBtnClick(event) {
   const resetBtnClicked = event.currentTarget;
-
-  const itemForRemove = resetBtnClicked.parentNode;
-  console.log(itemForRemove);
+  const resetBtnClickedData = resetBtnClicked.getAttribute('data--id');
+  console.log('click', resetBtnClickedData);
 }
 
-function addResetBtn(title, myItem) {
+function addResetBtn(id, myItem) {
   //Create btn reset
   const resetBtnEl = document.createElement('button');
   resetBtnEl.classList.add('reset-btn');
+  resetBtnEl.setAttribute('title', 'Borra de favoritos');
+
   const resetBtnContent = document.createTextNode('x');
 
   resetBtnEl.appendChild(resetBtnContent);
-  resetBtnEl.setAttribute('data--id', title);
+  resetBtnEl.setAttribute('data--id', id);
 
   myItem.appendChild(resetBtnEl);
 
@@ -181,6 +187,7 @@ function handlerCardsFavClick(event) {
 
   //Store in my favArray empty array
   myFavShowsArr.push(selectedCard);
+  console.log(myFavShowsArr);
 
   //Store my array of li in an object
   storeArrInObject(myFavShowsArr);
@@ -214,6 +221,7 @@ function handlerBtnSearch() {
 
       //FIRST Create li items from data
       const myItems = createItemsFromSearch(arrShows);
+
       //SECOND add card class
       const myItemsWithClass = appendClass(myItems, 'show-card');
       //THIRD Paint li results
