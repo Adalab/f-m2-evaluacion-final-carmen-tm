@@ -145,7 +145,7 @@ function handlerCardsFavClick(event) {
 
   //Check if the object is already a favourite or not by looking at its class
   const testFav = selectedCard.classList.contains('show-card--favourite');
-  console.log(testFav);
+  // console.log(testFav);
   if (!testFav) {
     //Add a special class for favourites
     selectedCard.classList.add('show-card--favourite');
