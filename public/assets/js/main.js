@@ -16,6 +16,14 @@ let myFavShowsArr = [];
 //Emtpy array of objects for paiting in favourit list and storing in LS
 const favShowsObjectsArray = [];
 
+function testId(myId, array) {
+  for (const element of array) {
+    const ids = element.getAttribute('id');
+    console.log('ids', ids);
+    console.log('myId', myId);
+  }
+}
+
 //Create items from the API result
 function createItemsFromSearch(array) {
   //Reset array
@@ -53,7 +61,7 @@ function createItemsFromSearch(array) {
     //Fill empty array with all items:
     resultsArr.push(newItemEl);
   }
-  console.log('my array of results is working', 'resultsArr', resultsArr);
+  // console.log('my array of results is working', 'resultsArr', resultsArr);
   return resultsArr;
 }
 
@@ -181,33 +189,74 @@ function addResetBtn(title, myItem) {
 //Add favourite functionlity on click
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
+  // console.log(selectedCard);
+  const idFav = selectedCard.id;
+  console.log(idFav);
+  console.log(myFavShowsArr);
 
-  //Check if the object is already a favourite or not by looking at its class
-  const testFav = selectedCard.classList.contains('show-card--favourite');
-  // console.log(testFav);
-  if (!testFav) {
-    //Add a special class for favourites
-    selectedCard.classList.add('show-card--favourite');
-
-    //Store in my favArray empty array
-    myFavShowsArr.push(selectedCard);
-    console.log('myFavShowsArr', myFavShowsArr);
-
-    //Store my array of li in an object
-    storeArrInObject(myFavShowsArr);
-    // console.log('favShowsObjectsArray', favShowsObjectsArray);
-
-    //Create array of li filled with content from the array of objects we have
-    const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
-    console.log('newArrayItemsToPaint', newArrayItemsToPaint);
-
-    // Paint li on my favourist list
-    paintResults(newArrayItemsToPaint, favouritesListEl);
-
-    //Store my favShowsObjectsArray in LS
-    storeInLS('myObject', favShowsObjectsArray);
+  for (const card of myFavShowsArr) {
+    console.log(myFavShowsArr);
+    //If element is already there, abort
+    if (idFav === card.id) {
+      console.log('id repetido');
+      return;
+    } else {
+      console.log('id nuevo');
+    }
   }
+  //Add a special class for favourites
+  selectedCard.classList.add('show-card--favourite');
+
+  //Store in my favArray empty array
+  myFavShowsArr.push(selectedCard);
+  console.log('myFavShowsArr', myFavShowsArr);
+
+  //Store my array of li in an object
+  storeArrInObject(myFavShowsArr);
+  // console.log('favShowsObjectsArray', favShowsObjectsArray);
+
+  //Create array of li filled with content from the array of objects we have
+  const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
+  console.log('newArrayItemsToPaint', newArrayItemsToPaint);
+
+  // Paint li on my favourist list
+  paintResults(newArrayItemsToPaint, favouritesListEl);
+
+  //Store my favShowsObjectsArray in LS
+  storeInLS('myObject', favShowsObjectsArray);
 }
+
+// //If the show is already there, dont push it!
+// for (const card of myFavShowsArr) {
+//   console.log(myFavShowsArr);
+//   if (idFav === card.id) {
+//     console.log('id repetido');
+//     // return;
+//   } else {
+//     console.log('id nuevo');
+//     //Add a special class for favourites
+//     selectedCard.classList.add('show-card--favourite');
+
+//     //Store in my favArray empty array
+//     myFavShowsArr.push(selectedCard);
+//     console.log('myFavShowsArr', myFavShowsArr);
+
+//     //Store my array of li in an object
+//     storeArrInObject(myFavShowsArr);
+//     // console.log('favShowsObjectsArray', favShowsObjectsArray);
+
+//     //Create array of li filled with content from the array of objects we have
+//     const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
+//     console.log('newArrayItemsToPaint', newArrayItemsToPaint);
+
+//     // Paint li on my favourist list
+//     paintResults(newArrayItemsToPaint, favouritesListEl);
+
+//     //Store my favShowsObjectsArray in LS
+//     storeInLS('myObject', favShowsObjectsArray);
+//   }
+// }
+// }
 
 //Handler for main button
 function handlerBtnSearch() {
