@@ -116,6 +116,10 @@ function createItemsFromObjArr(array) {
   return arrItemsToPaint;
 }
 
+function storeInLS(key, array) {
+  localStorage.setItem(key, JSON.stringify(array));
+}
+
 //Add favourite functionlity on click
 function handlerCardsFavClick(event) {
   const selectedCard = event.currentTarget;
@@ -140,6 +144,9 @@ function handlerCardsFavClick(event) {
 
     // Paint li on my favourist list
     paintResults(newItemToPaint, favouritesListEl);
+
+    //Store my favShowsObjectsArray in LS
+    storeInLS('myObject', favShowsObjectsArray);
   }
 }
 
