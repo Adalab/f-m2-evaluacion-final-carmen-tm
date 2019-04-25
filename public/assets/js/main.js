@@ -7,6 +7,40 @@ const btnEl = document.querySelector('.btn');
 const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
 
+const configNumbers = [5, 8, 10];
+
+const counterResults = document.querySelector('.counter-results');
+console.log(counterResults);
+
+function handlerResultsClick(event) {
+  const myCounter = event.currentTarget;
+  const myNumber = parseInt(myCounter.innerHTML);
+  console.log(myNumber);
+  console.log(configNumbers);
+
+  function myMessage(a, b, c) {
+    const message =
+      'El número de resultados es: ' + a + ' y es ' + c + ' que ' + b;
+    console.log(message);
+  }
+
+  for (const number of configNumbers) {
+    let myTest = '';
+    if (myNumber < number) {
+      myTest = 'menor';
+    } else if (myNumber === number) {
+      myTest = 'igual';
+    } else {
+      myTest = 'mayor';
+    }
+
+    myMessage(myNumber, number, myTest);
+  }
+}
+
+//Listener click
+counterResults.addEventListener('click', handlerResultsClick);
+
 //Empty array for items results from search
 let resultsArr = [];
 //Empty array for storing favourites shows
@@ -23,11 +57,17 @@ function createItemsFromSearch(array) {
     const idShow = element.show.id;
     const arrNames = element.show.name;
     let arrUrls = '';
+    let premiere = element.show.premiered;
+    // console.log(premiere);
 
     if (!element.show.image) {
       arrUrls = `https://via.placeholder.com/210x295/f4eded/9b1414/?text=${arrNames}`;
     } else {
       arrUrls = element.show.image.medium;
+    }
+
+    if (!premiere) {
+      premiere = 'No hay fecha de estreno';
     }
 
     //Create li elements
@@ -42,11 +82,17 @@ function createItemsFromSearch(array) {
     const contentItemTitleText = document.createTextNode(arrNames);
     contentItemTitleEl.appendChild(contentItemTitleText);
 
+    const contentItemPremEl = document.createElement('p');
+    const contentItemPremText = document.createTextNode(premiere);
+    contentItemPremEl.appendChild(contentItemPremText);
+    // console.log(contentItemPremEl);
+
     //Add id to make easier further instructions
     newItemEl.setAttribute('id', idShow);
 
     newItemEl.appendChild(contentItemImgEl);
     newItemEl.appendChild(contentItemTitleEl);
+    newItemEl.appendChild(contentItemPremEl);
 
     //Fill empty array with all items:
     resultsArr.push(newItemEl);
@@ -221,6 +267,14 @@ function handlerBtnSearch() {
     .then(function(data) {
       //The response is an array of objects
       const arrShows = data;
+      console.log(arrShows);
+
+      //número de resultados
+      let numberOfResults = arrShows.length;
+      console.log(numberOfResults);
+
+      //Append
+      counterResults.innerHTML = numberOfResults;
 
       //FIRST Create li items from data
       const myItems = createItemsFromSearch(arrShows);
