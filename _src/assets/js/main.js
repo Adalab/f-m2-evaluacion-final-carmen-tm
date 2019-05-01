@@ -19,6 +19,37 @@ let myFavShowsArr = [];
 const favShowsObjectsArray = [];
 
 //FUNCTIONS
+
+//Add a class to each item on a array
+function appendClass(myElement, myClass) {
+  myElement.classList.add(myClass);
+  myElement.setAttribute(
+    'title',
+    'Click para añadir show a tu lista de favoritos'
+  );
+  return myElement;
+}
+
+function createLiOnDOM(id, name, image) {
+  const newItemEl = document.createElement('li');
+  newItemEl.setAttribute('id', id);
+
+  //Create content nodes
+  const contentItemImgEl = document.createElement('img');
+  contentItemImgEl.setAttribute('src', image);
+  contentItemImgEl.setAttribute('alt', name);
+
+  const contentItemTitleEl = document.createElement('h3');
+  const contentItemTitleText = document.createTextNode(name);
+  contentItemTitleEl.appendChild(contentItemTitleText);
+
+  //Append elements
+  newItemEl.appendChild(contentItemImgEl);
+  newItemEl.appendChild(contentItemTitleEl);
+
+  return newItemEl;
+}
+
 //Create li items from the API result
 function createItemsFromSearch(array) {
   //Reset array
@@ -38,38 +69,16 @@ function createItemsFromSearch(array) {
       finalImage = image.medium;
     }
 
-    //Create li elements
-    const newItemEl = document.createElement('li');
+    //Advanced DOM: Create <li> and append them to the DOM
+    const liOnDOM = createLiOnDOM(id, name, finalImage);
 
-    //Create content node
-    const contentItemImgEl = document.createElement('img');
-    contentItemImgEl.setAttribute('src', finalImage);
-    contentItemImgEl.setAttribute('alt', name);
-
-    const contentItemTitleEl = document.createElement('h3');
-    const contentItemTitleText = document.createTextNode(name);
-    contentItemTitleEl.appendChild(contentItemTitleText);
-
-    //Add id to make easier further instructions
-    newItemEl.setAttribute('id', id);
-
-    newItemEl.appendChild(contentItemImgEl);
-    newItemEl.appendChild(contentItemTitleEl);
+    //Add class 'show-card' for visual styles
+    const liOnDommWithClass = appendClass(liOnDOM, 'show-card');
 
     //Fill empty array with all items:
-    resultsArr.push(newItemEl);
+    resultsArr.push(liOnDommWithClass);
   }
-
   return resultsArr;
-}
-
-//Add a class to each item on a array
-function appendClass(arrayItems, myClass) {
-  for (const item of arrayItems) {
-    item.classList.add(myClass);
-    item.setAttribute('title', 'Añade a tu lista de favoritos');
-  }
-  return arrayItems;
 }
 
 //Append each li to its list
@@ -235,11 +244,10 @@ function getShowsFromApi(query) {
     .then(function(arrayShows) {
       //FIRST Create li items from data
       const myItems = createItemsFromSearch(arrayShows);
+      console.log(myItems);
 
-      //SECOND add card class
-      const myItemsWithClass = appendClass(myItems, 'show-card');
       //THIRD Paint li results
-      paintResults(myItemsWithClass, resultListEl);
+      paintResults(myItems, resultListEl);
 
       // Add listener to each card from the results to add Favourites functionality
       const resultsCardEl = document.querySelectorAll('.show-card');
