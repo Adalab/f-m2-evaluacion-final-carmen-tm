@@ -1,11 +1,13 @@
 /* eslint-disable no-console */
 'use strict';
 
+//ELEMENTS
 const inputEl = document.querySelector('.app-input');
 const btnEl = document.querySelector('.btn');
-
 const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
+
+const URL = 'http://api.tvmaze.com/search/shows?q=';
 
 //Empty array for items results from search
 let resultsArr = [];
@@ -205,14 +207,9 @@ function handlerCardsFavClick(event) {
   storeInLS('myObject', favShowsObjectsArray);
 }
 
-//Handler for main button
-function handlerBtnSearch(event) {
-  event.preventDefault();
-  //Save user input value
-  const userValue = inputEl.value;
-
-  //Connect to API
-  fetch(`http://api.tvmaze.com/search/shows?q=${userValue}`)
+//FUNCTIONS
+function getShowsFromApi(query) {
+  fetch(`${URL}${query}`)
     .then(function(response) {
       return response.json();
     })
@@ -239,8 +236,19 @@ function handlerBtnSearch(event) {
     });
 }
 
+//Handler for main Search button
+function handlerBtnSearchClick(event) {
+  event.preventDefault();
+
+  const userValue = inputEl.value;
+  //Make API fetch just if the user has written on the input!
+  if (userValue) {
+    getShowsFromApi(userValue);
+  }
+}
+
 //Add lister to main Search button
-btnEl.addEventListener('click', handlerBtnSearch);
+btnEl.addEventListener('click', handlerBtnSearchClick);
 
 //Retrieve info from LS when refreshing
 refreshPage();
