@@ -11,7 +11,7 @@ const URL = 'http://api.tvmaze.com/search/shows?q=';
 const DEFULT_IMAGE = 'https://via.placeholder.com/210x295/f4eded/9b1414/?text=';
 
 //EMPTY ARRAYS/OBJECTS
-//Empty array for items results from search
+//Empty array for my li items results from search
 let resultsArr = [];
 //Empty array for storing favourites shows
 let myFavShowsArr = [];
@@ -36,10 +36,12 @@ function createLiOnDOM(id, name, image) {
 
   //Create content nodes
   const contentItemImgEl = document.createElement('img');
+  contentItemImgEl.classList.add('show-card__img');
   contentItemImgEl.setAttribute('src', image);
   contentItemImgEl.setAttribute('alt', name);
 
   const contentItemTitleEl = document.createElement('h3');
+  contentItemTitleEl.classList.add('show-card__title');
   const contentItemTitleText = document.createTextNode(name);
   contentItemTitleEl.appendChild(contentItemTitleText);
 
@@ -90,22 +92,21 @@ function paintResults(array, list) {
   }
 }
 
-function storeArrInObject(array) {
-  for (let i = 0; i < array.length; i++) {
-    const favImgEl = array[i].firstElementChild;
-    const favImgUrl = favImgEl.src;
+function storeItemInObject(item) {
+  const favId = item.getAttribute('id');
 
-    const favTitleEl = favImgEl.nextElementSibling;
-    const favTitleText = favTitleEl.innerHTML;
+  const favImgEl = item.querySelector('.show-card__img');
+  const favImgUrl = favImgEl.src;
 
-    const favId = array[i].getAttribute('id');
+  const favTitleEl = item.querySelector('.show-card__title');
+  const favTitleText = favTitleEl.innerHTML;
 
-    favShowsObjectsArray[i] = {
-      url: favImgUrl,
-      title: favTitleText,
-      id: favId
-    };
-  }
+  newFavObject = {
+    id: favId,
+    title: favTitleText,
+    url: favImgUrl
+  };
+  favShowsObjectsArray.push(newFavObject);
 }
 
 function createItemsFromObjArr(array) {
@@ -187,30 +188,17 @@ function addResetBtn(id, myItem) {
 }
 
 //Add favourite functionlity on click
-function handlerCardsFavClick(event) {
-  const selectedCard = event.currentTarget;
-  const idFav = selectedCard.id;
-  // console.log(idFav);
-  // console.log(myFavShowsArr);
+function handlerAddToFavClick(event) {
+  const currentCard = event.currentTarget;
 
-  for (const card of myFavShowsArr) {
-    //If element is already there, abort
-    if (idFav === card.id) {
-      card.classList.add('show-card--favourite');
-      return;
-    } else {
-      // console.log('id nuevo');
-    }
-  }
-  //Add a special class for favourites
-  selectedCard.classList.add('show-card--favourite');
+  currentCard.classList.toggle('show-card--favourite');
 
+  //Store my favourites lis as objects in my fav array
+  storeItemInObject(currentCard);
+
+  ////////////////////////////////////////////
   //Store in my favArray empty array
-  myFavShowsArr.push(selectedCard);
-  // console.log(myFavShowsArr);
-
-  //Store my array of li in an object
-  storeArrInObject(myFavShowsArr);
+  myFavShowsArr.push(currentCard);
 
   //Create array of li filled with content from the array of objects we have
   const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
@@ -220,6 +208,19 @@ function handlerCardsFavClick(event) {
 
   //Store my favShowsObjectsArray in LS
   storeInLS('myObject', favShowsObjectsArray);
+  // const idFav = currentCard.id;
+  // // console.log(idFav);
+  // // console.log(myFavShowsArr);
+
+  // for (const card of myFavShowsArr) {
+  //   //If element is already there, abort
+  //   if (idFav === card.id) {
+  //     card.classList.add('show-card--favourite');
+  //     return;
+  //   } else {
+  //     // console.log('id nuevo');
+  //   }
+  // }
 }
 
 //FUNCTIONS
@@ -237,16 +238,15 @@ function getShowsFromApi(query) {
 
         //If there are results, keep going :)
       } else {
-        //FIRST Create li items from data
+        //Create li items from data
         const myItems = createItemsFromSearch(responseParsed);
-
-        //THIRD Paint li results
+        //Paint li on the list results
         paintResults(myItems, resultListEl);
 
-        // Add listener to each card from the results to add Favourites functionality
-        const resultsCardEl = document.querySelectorAll('.show-card');
-        for (const card of resultsCardEl) {
-          card.addEventListener('click', handlerCardsFavClick);
+        // Add listener to each li card to impelment 'Add to Favourites' new functionality
+        const resultsCardsEls = document.querySelectorAll('.show-card');
+        for (const card of resultsCardsEls) {
+          card.addEventListener('click', handlerAddToFavClick);
         }
       }
     });
@@ -257,7 +257,7 @@ function handlerBtnSearchClick(event) {
   event.preventDefault();
 
   const userValue = inputEl.value;
-  //Make API fetch just if the user has written on the input!
+  //Make API fetch just if the user has written something
   if (userValue) {
     getShowsFromApi(userValue);
   }

@@ -5,7 +5,8 @@
 
 // Styles for section app-searcher-favourites on the left side
 .app-searcher-favourites {
-  width: 40%;
+  // width: 40%;
+  flex-basis: 200px;
 }
 
 .app-searcher {
@@ -85,6 +86,7 @@
 
 // Styles for section app-result on the right side
 .results {
+  // flex-grow: 1;
   margin-left: 20px;
   padding-left: 20px;
   border-left: 2px solid $color-primary;
@@ -108,11 +110,11 @@
   padding: 10px;
   margin: 5px;
   cursor: pointer;
-}
 
-.show-card--favourite {
-  color: $color-primary;
-  background-color: $color-secondary;
+  &--favourite {
+    color: $color-primary;
+    background-color: $color-secondary;
+  }
 }
 
 .app-result {

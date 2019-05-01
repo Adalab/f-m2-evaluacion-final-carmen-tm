@@ -69,7 +69,8 @@ body {
 }
 
 .app-searcher-favourites {
-  width: 40%;
+  -ms-flex-preferred-size: 200px;
+  flex-basis: 200px;
 }
 
 .app-searcher {
