@@ -83,39 +83,7 @@ function paintResults(array, list) {
   }
 }
 
-function createItemsFromObjArr(array) {
-  const arrItemsToPaint = [];
-  for (const item of array) {
-    const name = item.title;
-    const url = item.url;
-    const id = item.id;
-
-    //Create elements and contents
-    const prevItemEl = document.createElement('li');
-
-    const prevItemImgEl = document.createElement('img');
-    prevItemImgEl.setAttribute('src', url);
-    prevItemImgEl.setAttribute('alt', name);
-
-    const prevItemTitleEl = document.createElement('h3');
-    const prevItemTitleContent = document.createTextNode(name);
-    prevItemTitleEl.appendChild(prevItemTitleContent);
-
-    //Append filled elements to my item
-    prevItemEl.appendChild(prevItemImgEl);
-    prevItemEl.appendChild(prevItemTitleEl);
-    prevItemEl.setAttribute('id', id);
-    prevItemEl.classList.add('preview--favourite');
-
-    //Add reset button to each item
-    addResetBtn(id, prevItemEl);
-
-    arrItemsToPaint.push(prevItemEl);
-  }
-  return arrItemsToPaint;
-}
-
-function storeInLS(key, array) {
+function storeObjectsOnLS(key, array) {
   localStorage.setItem(key, JSON.stringify(array));
 }
 
@@ -191,7 +159,7 @@ function handlerAddToFavClick(event) {
   paintResults(myFavItems, favouritesListEl);
 
   //Store my favShowsObjectsArr in LS
-  storeInLS('myObject', favShowsObjectsArr);
+  storeObjectsOnLS('myObject', favShowsObjectsArr);
 }
 
 //FUNCTIONS
