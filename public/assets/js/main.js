@@ -206,7 +206,8 @@ function handlerCardsFavClick(event) {
 }
 
 //Handler for main button
-function handlerBtnSearch() {
+function handlerBtnSearch(event) {
+  event.preventDefault();
   //Save user input value
   const userValue = inputEl.value;
 
