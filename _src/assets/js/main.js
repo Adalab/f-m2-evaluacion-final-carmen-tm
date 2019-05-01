@@ -8,7 +8,9 @@ const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
 
 const URL = 'http://api.tvmaze.com/search/shows?q=';
+const DEFULT_IMAGE = 'https://via.placeholder.com/210x295/f4eded/9b1414/?text=';
 
+//EMPTY ARRAYS/OBJECTS
 //Empty array for items results from search
 let resultsArr = [];
 //Empty array for storing favourites shows
@@ -16,20 +18,24 @@ let myFavShowsArr = [];
 //Emtpy array of objects for paiting in favourit list and storing in LS
 const favShowsObjectsArray = [];
 
-//Create items from the API result
+//FUNCTIONS
+//Create li items from the API result
 function createItemsFromSearch(array) {
   //Reset array
   resultsArr = [];
 
   for (const element of array) {
-    const idShow = element.show.id;
-    const arrNames = element.show.name;
-    let arrUrls = '';
+    // const idShow = element.show.id;
+    // const arrNames = element.show.name;
+    const { show } = element;
+    console.log(show);
+    const { id, name, image } = show;
 
-    if (!element.show.image) {
-      arrUrls = `https://via.placeholder.com/210x295/f4eded/9b1414/?text=${arrNames}`;
+    let finalImage = '';
+    if (!image) {
+      finalImage = `${DEFULT_IMAGE}${name}`;
     } else {
-      arrUrls = element.show.image.medium;
+      finalImage = image.medium;
     }
 
     //Create li elements
@@ -37,15 +43,15 @@ function createItemsFromSearch(array) {
 
     //Create content node
     const contentItemImgEl = document.createElement('img');
-    contentItemImgEl.setAttribute('src', arrUrls);
-    contentItemImgEl.setAttribute('alt', arrNames);
+    contentItemImgEl.setAttribute('src', finalImage);
+    contentItemImgEl.setAttribute('alt', name);
 
     const contentItemTitleEl = document.createElement('h3');
-    const contentItemTitleText = document.createTextNode(arrNames);
+    const contentItemTitleText = document.createTextNode(name);
     contentItemTitleEl.appendChild(contentItemTitleText);
 
     //Add id to make easier further instructions
-    newItemEl.setAttribute('id', idShow);
+    newItemEl.setAttribute('id', id);
 
     newItemEl.appendChild(contentItemImgEl);
     newItemEl.appendChild(contentItemTitleEl);
@@ -214,14 +220,21 @@ function getShowsFromApi(query) {
       return response.json();
     })
     .then(function(responseParsed) {
+      console.log(responseParsed);
+      //If there are no results... :(
+      if (!responseParsed.length) {
+        console.log('no hay resultados');
+        // FIXME:
+        resultListEl.innerHTML = `
+        <p>No hay resultados para la búsqueda: ${query}</p>
+        `;
+      }
+      //If there are results, keep going :)
       return responseParsed;
     })
-    .then(function(data) {
-      //The response is an array of objects
-      const arrShows = data;
-
+    .then(function(arrayShows) {
       //FIRST Create li items from data
-      const myItems = createItemsFromSearch(arrShows);
+      const myItems = createItemsFromSearch(arrayShows);
 
       //SECOND add card class
       const myItemsWithClass = appendClass(myItems, 'show-card');
