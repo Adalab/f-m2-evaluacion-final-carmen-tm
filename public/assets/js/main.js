@@ -25,7 +25,7 @@ function appendClass(myElement, myClass) {
   myElement.classList.add(myClass);
   myElement.setAttribute(
     'title',
-    'Click para añadir show a tu lista de favoritos'
+    'Click para añadir este show a tu lista de favoritos'
   );
   return myElement;
 }
@@ -229,30 +229,25 @@ function getShowsFromApi(query) {
       return response.json();
     })
     .then(function(responseParsed) {
-      console.log(responseParsed);
       //If there are no results... :(
       if (!responseParsed.length) {
-        console.log('no hay resultados');
-        // FIXME:
         resultListEl.innerHTML = `
-        <p>No hay resultados para la búsqueda: ${query}</p>
+        <p>Lo sentimos. No hay resultados para tu búsqueda "${query}". Inténtalo de nuevo con otro nombre :)</p>
         `;
-      }
-      //If there are results, keep going :)
-      return responseParsed;
-    })
-    .then(function(arrayShows) {
-      //FIRST Create li items from data
-      const myItems = createItemsFromSearch(arrayShows);
-      console.log(myItems);
 
-      //THIRD Paint li results
-      paintResults(myItems, resultListEl);
+        //If there are results, keep going :)
+      } else {
+        //FIRST Create li items from data
+        const myItems = createItemsFromSearch(responseParsed);
 
-      // Add listener to each card from the results to add Favourites functionality
-      const resultsCardEl = document.querySelectorAll('.show-card');
-      for (const card of resultsCardEl) {
-        card.addEventListener('click', handlerCardsFavClick);
+        //THIRD Paint li results
+        paintResults(myItems, resultListEl);
+
+        // Add listener to each card from the results to add Favourites functionality
+        const resultsCardEl = document.querySelectorAll('.show-card');
+        for (const card of resultsCardEl) {
+          card.addEventListener('click', handlerCardsFavClick);
+        }
       }
     });
 }
