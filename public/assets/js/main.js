@@ -10,16 +10,13 @@ const favouritesListEl = document.querySelector('.favourites__list');
 const URL = 'http://api.tvmaze.com/search/shows?q=';
 const DEFULT_IMAGE = 'https://via.placeholder.com/210x295/f4eded/9b1414/?text=';
 
-//EMPTY ARRAYS/OBJECTS
-//Empty array for my li items results from search
-let resultsArr = [];
-//Empty array for storing favourites shows
-let myFavShowsArr = [];
-//Emtpy array of objects for paiting in favourit list and storing in LS
-const favShowsObjectsArray = [];
+//EMPTY ARRAYS of OBJECTS
+//Empty array for storing all the info from the result on any search
+let resultsObjectsArr = [];
+//Empty array for storing user's favourites shows
+let favShowsObjectsArr = [];
 
 //FUNCTIONS
-
 //Add a class to each item on a array
 function appendClass(myElement, myClass) {
   myElement.classList.add(myClass);
@@ -32,7 +29,7 @@ function appendClass(myElement, myClass) {
 
 function createLiOnDOM(id, name, image) {
   const newItemEl = document.createElement('li');
-  newItemEl.setAttribute('id', id);
+  newItemEl.setAttribute('data-id', id);
 
   //Create content nodes
   const contentItemImgEl = document.createElement('img');
@@ -53,13 +50,9 @@ function createLiOnDOM(id, name, image) {
 }
 
 //Create li items from the API result
-function createItemsFromSearch(array) {
-  //Reset array
-  resultsArr = [];
-
+function createItemsFromObjects(array, myClass) {
+  const liArr = [];
   for (const element of array) {
-    // const idShow = element.show.id;
-    // const arrNames = element.show.name;
     const { show } = element;
     console.log(show);
     const { id, name, image } = show;
@@ -75,12 +68,10 @@ function createItemsFromSearch(array) {
     const liOnDOM = createLiOnDOM(id, name, finalImage);
 
     //Add class 'show-card' for visual styles
-    const liOnDommWithClass = appendClass(liOnDOM, 'show-card');
-
-    //Fill empty array with all items:
-    resultsArr.push(liOnDommWithClass);
+    const liOnDOMWithClass = appendClass(liOnDOM, myClass);
+    liArr.push(liOnDOMWithClass);
   }
-  return resultsArr;
+  return liArr;
 }
 
 //Append each li to its list
@@ -90,23 +81,6 @@ function paintResults(array, list) {
   for (const element of array) {
     list.appendChild(element);
   }
-}
-
-function storeItemInObject(item) {
-  const favId = item.getAttribute('id');
-
-  const favImgEl = item.querySelector('.show-card__img');
-  const favImgUrl = favImgEl.src;
-
-  const favTitleEl = item.querySelector('.show-card__title');
-  const favTitleText = favTitleEl.innerHTML;
-
-  newFavObject = {
-    id: favId,
-    title: favTitleText,
-    url: favImgUrl
-  };
-  favShowsObjectsArray.push(newFavObject);
 }
 
 function createItemsFromObjArr(array) {
@@ -152,7 +126,7 @@ function refreshPage() {
   if (infoSavedInLS) {
     const savedItemToPaint = createItemsFromObjArr(infoSavedInLS);
 
-    myFavShowsArr = savedItemToPaint;
+    favShowsObjectsArr = savedItemToPaint;
 
     // Paint li on my favourist list
     paintResults(savedItemToPaint, favouritesListEl);
@@ -187,49 +161,49 @@ function addResetBtn(id, myItem) {
   resetBtnEl.addEventListener('click', handlerResetBtnClick);
 }
 
+function storeFavShowObjectInArr(id, array1, array2) {
+  for (const item of array1) {
+    if (item.show.id === id) {
+      array2.push(item);
+    }
+  }
+  return array2;
+}
+
 //Add favourite functionlity on click
 function handlerAddToFavClick(event) {
   const currentCard = event.currentTarget;
+  const idFav = parseInt(currentCard.getAttribute('data-id'));
+  console.log(idFav);
 
   currentCard.classList.toggle('show-card--favourite');
 
-  //Store my favourites lis as objects in my fav array
-  storeItemInObject(currentCard);
+  //Store my favourite show as an object in my fav objects array
+  storeFavShowObjectInArr(idFav, resultsObjectsArr, favShowsObjectsArr);
+  console.log(favShowsObjectsArr);
 
-  ////////////////////////////////////////////
-  //Store in my favArray empty array
-  myFavShowsArr.push(currentCard);
+  //Create li fav items from data
+  const myFavItems = createItemsFromObjects(
+    favShowsObjectsArr,
+    'preview--favourite'
+  );
+  //Paint li fav on the list fav
+  paintResults(myFavItems, favouritesListEl);
 
-  //Create array of li filled with content from the array of objects we have
-  const newArrayItemsToPaint = createItemsFromObjArr(favShowsObjectsArray);
-
-  // Paint li on my favourist list
-  paintResults(newArrayItemsToPaint, favouritesListEl);
-
-  //Store my favShowsObjectsArray in LS
-  storeInLS('myObject', favShowsObjectsArray);
-  // const idFav = currentCard.id;
-  // // console.log(idFav);
-  // // console.log(myFavShowsArr);
-
-  // for (const card of myFavShowsArr) {
-  //   //If element is already there, abort
-  //   if (idFav === card.id) {
-  //     card.classList.add('show-card--favourite');
-  //     return;
-  //   } else {
-  //     // console.log('id nuevo');
-  //   }
-  // }
+  //Store my favShowsObjectsArr in LS
+  storeInLS('myObject', favShowsObjectsArr);
 }
 
 //FUNCTIONS
-function getShowsFromApi(query) {
+function getShowsFromAPI(query) {
   fetch(`${URL}${query}`)
     .then(function(response) {
       return response.json();
     })
     .then(function(responseParsed) {
+      //On any search, I fill this array with the objects that come from the API, with all the info of each show on it!!
+      resultsObjectsArr = responseParsed;
+
       //If there are no results... :(
       if (!responseParsed.length) {
         resultListEl.innerHTML = `
@@ -239,7 +213,7 @@ function getShowsFromApi(query) {
         //If there are results, keep going :)
       } else {
         //Create li items from data
-        const myItems = createItemsFromSearch(responseParsed);
+        const myItems = createItemsFromObjects(responseParsed, 'show-card');
         //Paint li on the list results
         paintResults(myItems, resultListEl);
 
@@ -259,7 +233,7 @@ function handlerBtnSearchClick(event) {
   const userValue = inputEl.value;
   //Make API fetch just if the user has written something
   if (userValue) {
-    getShowsFromApi(userValue);
+    getShowsFromAPI(userValue);
   }
 }
 
