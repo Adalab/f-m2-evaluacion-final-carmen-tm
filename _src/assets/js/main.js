@@ -135,20 +135,26 @@ function drawFavourites() {
   }
 }
 
+function removeItemFromArray(id, array) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].show.id === parseInt(id)) {
+      console.log('item para borrar', id, array, i);
+      array.splice(i, 1);
+    }
+  }
+  //Store my array of fav objects in LS
+  storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
+  //Draw updated list of favourites
+  drawFavourites();
+}
+
 function handlerBtnResetClick(event) {
   console.log('click');
   const currentBtnReset = event.currentTarget;
   const idBtnReset = currentBtnReset.getAttribute('data-id');
 
-  for (let i = 0; i < favShowsObjectsArr.length; i++) {
-    if (favShowsObjectsArr[i].show.id === parseInt(idBtnReset)) {
-      favShowsObjectsArr.splice(i, 1);
-    }
-  }
-  console.log(favShowsObjectsArr);
-  //Store my array of fav objects in LS
-  storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
-  drawFavourites();
+  //Remove item from fav array
+  removeItemFromArray(idBtnReset, favShowsObjectsArr);
 }
 
 //Add favourite functionlity on click
@@ -159,14 +165,24 @@ function handlerAddToFavClick(event) {
 
   currentCard.classList.toggle('show-card--favourite');
 
-  //Store my favourite show as an object in my fav objects array
-  storeFavShowObjectInArr(idFav, resultsObjectsArr, favShowsObjectsArr);
+  if (currentCard.classList.contains('show-card--favourite')) {
+    console.log(
+      'Recién favorita, añádeme al LS y píntame en la lista de Favoritos'
+    );
+    //Store my favourite show as an object in my fav objects array
+    storeFavShowObjectInArr(idFav, resultsObjectsArr, favShowsObjectsArr);
 
-  //Store my array of fav objects in LS
-  storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
+    //Store my array of fav objects in LS
+    storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
 
-  //Create li and paint them
-  drawFavourites();
+    //Create li and paint them
+    drawFavourites();
+  } else {
+    console.log(
+      'era favorita, pero ya no. Quítame de LS y bórrame de favoritos'
+    );
+    removeItemFromArray(idFav, favShowsObjectsArr);
+  }
 }
 
 function drawResults(responseParsed) {
