@@ -3,13 +3,14 @@
 
 //ELEMENTS
 const inputEl = document.querySelector('.app-input');
-const btnEl = document.querySelector('.btn');
+const btnSearchEl = document.querySelector('.btn-search');
+
 const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
 
 const URL = 'http://api.tvmaze.com/search/shows?q=';
 const DEFULT_IMAGE = 'https://via.placeholder.com/210x295/f4eded/9b1414/?text=';
-const LS_FAVS_KEY = 'favShowsOjbjects';
+const LS_FAVS_KEY = 'favShowsObjects';
 
 //EMPTY ARRAYS of OBJECTS
 //Empty array for storing all the info from the result on any search
@@ -18,44 +19,58 @@ let resultsObjectsArr = [];
 let favShowsObjectsArr = JSON.parse(localStorage.getItem(LS_FAVS_KEY)) || [];
 
 //FUNCTIONS
-function createLiOnDOM(id, name, image) {
+function createLiOnDOM(id, name, image, isFav) {
   const newItemEl = document.createElement('li');
   newItemEl.setAttribute('data-id', id);
 
   //Create content nodes
-  const contentItemImgEl = document.createElement('img');
-  contentItemImgEl.classList.add('show-card__img');
-  contentItemImgEl.setAttribute('src', image);
-  contentItemImgEl.setAttribute('alt', name);
+  const itemImgEl = document.createElement('img');
+  itemImgEl.classList.add('show-card__img');
+  itemImgEl.setAttribute('src', image);
+  itemImgEl.setAttribute('alt', name);
 
-  const contentItemTitleEl = document.createElement('h3');
-  contentItemTitleEl.classList.add('show-card__title');
-  const contentItemTitleText = document.createTextNode(name);
-  contentItemTitleEl.appendChild(contentItemTitleText);
+  const itemTitleEl = document.createElement('h3');
+  itemTitleEl.classList.add('show-card__title');
+  const itemTitleText = document.createTextNode(name);
+  itemTitleEl.appendChild(itemTitleText);
 
   //Append elements
-  newItemEl.appendChild(contentItemImgEl);
-  newItemEl.appendChild(contentItemTitleEl);
+  newItemEl.appendChild(itemImgEl);
+  newItemEl.appendChild(itemTitleEl);
+
+  let itemBtnResetEl;
+  if (isFav) {
+    itemBtnResetEl = document.createElement('button');
+    const itemBtnResetText = document.createTextNode('x');
+    itemBtnResetEl.appendChild(itemBtnResetText);
+    itemBtnResetEl.classList.add('btn-reset');
+    itemBtnResetEl.setAttribute('data-id', id);
+    itemBtnResetEl.setAttribute('title', 'Borra de favoritos');
+    newItemEl.appendChild(itemBtnResetEl);
+  } else {
+    itemBtnResetEl = '';
+  }
 
   return newItemEl;
 }
 
 //Add a class to each item on a array
-function appendClass(myElement, myClass) {
+function appendClassAndTitle(myElement, myClass, isFav) {
   myElement.classList.add(myClass);
   myElement.setAttribute(
     'title',
-    'Click para añadir este show a tu lista de favoritos'
+    isFav
+      ? 'Show favorito'
+      : 'Click para añadir este show a tu lista de favoritos'
   );
   return myElement;
 }
 
 //Create li items from Objects (the API result, my array of objects..)
-function createItemsFromObjects(array, myClass) {
+function createItemsFromObjects(array, myClass, isFav) {
   const liArr = [];
   for (const element of array) {
     const { show } = element;
-    console.log(show);
     const { id, name, image } = show;
 
     let finalImage = '';
@@ -66,10 +81,10 @@ function createItemsFromObjects(array, myClass) {
     }
 
     //Advanced DOM: Create <li> and append them to the DOM
-    const liOnDOM = createLiOnDOM(id, name, finalImage);
+    const liOnDOM = createLiOnDOM(id, name, finalImage, isFav);
 
     //Add class 'show-card' for visual styles
-    const liOnDOMWithClass = appendClass(liOnDOM, myClass);
+    const liOnDOMWithClass = appendClassAndTitle(liOnDOM, myClass, isFav);
     liArr.push(liOnDOMWithClass);
   }
   return liArr;
@@ -102,11 +117,38 @@ function drawFavourites() {
   //Create li fav items from data
   const myFavItems = createItemsFromObjects(
     favShowsObjectsArr,
-    'preview--favourite'
+    'preview--favourite',
+    true
   );
 
   //Paint li fav on the list fav
   paintResults(myFavItems, favouritesListEl);
+
+  //Add listeners to btn-reset
+  if (favShowsObjectsArr.length) {
+    const btnResetEls = document.querySelectorAll('.btn-reset');
+    //Add listener to my reset buttons
+    for (const btnReset of btnResetEls) {
+      // console.log(btnResetEls);
+      btnReset.addEventListener('click', handlerBtnResetClick);
+    }
+  }
+}
+
+function handlerBtnResetClick(event) {
+  console.log('click');
+  const currentBtnReset = event.currentTarget;
+  const idBtnReset = currentBtnReset.getAttribute('data-id');
+
+  for (let i = 0; i < favShowsObjectsArr.length; i++) {
+    if (favShowsObjectsArr[i].show.id === parseInt(idBtnReset)) {
+      favShowsObjectsArr.splice(i, 1);
+    }
+  }
+  console.log(favShowsObjectsArr);
+  //Store my array of fav objects in LS
+  storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
+  drawFavourites();
 }
 
 //Add favourite functionlity on click
@@ -129,7 +171,7 @@ function handlerAddToFavClick(event) {
 
 function drawResults(responseParsed) {
   //Create li items from data
-  const myItems = createItemsFromObjects(responseParsed, 'show-card');
+  const myItems = createItemsFromObjects(responseParsed, 'show-card', false);
   //Paint li on the list results
   paintResults(myItems, resultListEl);
 
@@ -177,7 +219,7 @@ function handlerBtnSearchClick(event) {
 //Add lister to main Search button
 const initApp = () => {
   drawFavourites();
-  btnEl.addEventListener('click', handlerBtnSearchClick);
+  btnSearchEl.addEventListener('click', handlerBtnSearchClick);
 };
 initApp();
 

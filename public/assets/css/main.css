@@ -100,7 +100,7 @@ body {
   border-bottom: 1px solid crimson;
 }
 
-.btn {
+.btn-search {
   background-color: crimson;
   color: white;
   padding: 2px 10px;
@@ -148,6 +148,7 @@ body {
   align-items: center;
   color: crimson;
   background-color: coral;
+  cursor: pointer;
 }
 
 .preview--favourite img {
@@ -160,7 +161,7 @@ body {
   text-align: center;
 }
 
-.reset-btn {
+.btn-reset {
   color: white;
   background-color: crimson;
   width: 20px;
