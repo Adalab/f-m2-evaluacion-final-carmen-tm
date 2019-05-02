@@ -257,14 +257,19 @@ function syncResults() {
   }
 }
 function handlerBtnResetAllClick() {
-  favShowsObjectsArr = [];
-  syncResults();
+  const confirmation = confirm(
+    '¿Estás segur@ que quieres borrar tu lista de favoritos?'
+  );
+  if (confirmation) {
+    favShowsObjectsArr = [];
+    syncResults();
 
-  //Store my array of fav objects in LS
-  storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
+    //Store my array of fav objects in LS
+    storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
 
-  //Create li and paint them
-  drawFavourites();
+    //Create li and paint them
+    drawFavourites();
+  }
 }
 
 //All the things taht happen when loading the page
