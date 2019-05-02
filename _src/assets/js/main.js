@@ -9,24 +9,15 @@ const favouritesListEl = document.querySelector('.favourites__list');
 
 const URL = 'http://api.tvmaze.com/search/shows?q=';
 const DEFULT_IMAGE = 'https://via.placeholder.com/210x295/f4eded/9b1414/?text=';
+const LS_FAVS_KEY = 'favShowsOjbjects';
 
 //EMPTY ARRAYS of OBJECTS
 //Empty array for storing all the info from the result on any search
 let resultsObjectsArr = [];
-//Empty array for storing user's favourites shows
-let favShowsObjectsArr = [];
+//Always check if LS has something when starting/refreshing!! If not (falsy), give me an empty array
+let favShowsObjectsArr = JSON.parse(localStorage.getItem(LS_FAVS_KEY)) || [];
 
 //FUNCTIONS
-//Add a class to each item on a array
-function appendClass(myElement, myClass) {
-  myElement.classList.add(myClass);
-  myElement.setAttribute(
-    'title',
-    'Click para añadir este show a tu lista de favoritos'
-  );
-  return myElement;
-}
-
 function createLiOnDOM(id, name, image) {
   const newItemEl = document.createElement('li');
   newItemEl.setAttribute('data-id', id);
@@ -49,7 +40,17 @@ function createLiOnDOM(id, name, image) {
   return newItemEl;
 }
 
-//Create li items from the API result
+//Add a class to each item on a array
+function appendClass(myElement, myClass) {
+  myElement.classList.add(myClass);
+  myElement.setAttribute(
+    'title',
+    'Click para añadir este show a tu lista de favoritos'
+  );
+  return myElement;
+}
+
+//Create li items from Objects (the API result, my array of objects..)
 function createItemsFromObjects(array, myClass) {
   const liArr = [];
   for (const element of array) {
@@ -83,52 +84,6 @@ function paintResults(array, list) {
   }
 }
 
-function storeObjectsOnLS(key, array) {
-  localStorage.setItem(key, JSON.stringify(array));
-}
-
-function refreshPage() {
-  //Check if LS has something
-  const infoSavedInLS = JSON.parse(localStorage.getItem('myObject'));
-
-  if (infoSavedInLS) {
-    const savedItemToPaint = createItemsFromObjArr(infoSavedInLS);
-
-    favShowsObjectsArr = savedItemToPaint;
-
-    // Paint li on my favourist list
-    paintResults(savedItemToPaint, favouritesListEl);
-  } else {
-    console.log('caché is empty');
-  }
-}
-
-function handlerResetBtnClick(event) {
-  const resetBtnClicked = event.currentTarget;
-
-  const itemForRemove = resetBtnClicked.parentNode;
-
-  //Removing from the painted list
-  favouritesListEl.removeChild(itemForRemove);
-}
-
-function addResetBtn(id, myItem) {
-  //Create btn reset
-  const resetBtnEl = document.createElement('button');
-  resetBtnEl.classList.add('reset-btn');
-  resetBtnEl.setAttribute('title', 'Borra de favoritos');
-
-  const resetBtnContent = document.createTextNode('x');
-
-  resetBtnEl.appendChild(resetBtnContent);
-  resetBtnEl.setAttribute('data--id', id);
-
-  myItem.appendChild(resetBtnEl);
-
-  //Add listener
-  resetBtnEl.addEventListener('click', handlerResetBtnClick);
-}
-
 function storeFavShowObjectInArr(id, array1, array2) {
   for (const item of array1) {
     if (item.show.id === id) {
@@ -136,6 +91,22 @@ function storeFavShowObjectInArr(id, array1, array2) {
     }
   }
   return array2;
+}
+
+//Storing objects on LocalStore
+function storeFavObjectsOnLS(key, array) {
+  localStorage.setItem(key, JSON.stringify(array));
+}
+
+function drawFavourites() {
+  //Create li fav items from data
+  const myFavItems = createItemsFromObjects(
+    favShowsObjectsArr,
+    'preview--favourite'
+  );
+
+  //Paint li fav on the list fav
+  paintResults(myFavItems, favouritesListEl);
 }
 
 //Add favourite functionlity on click
@@ -148,28 +119,34 @@ function handlerAddToFavClick(event) {
 
   //Store my favourite show as an object in my fav objects array
   storeFavShowObjectInArr(idFav, resultsObjectsArr, favShowsObjectsArr);
-  console.log(favShowsObjectsArr);
 
-  //Create li fav items from data
-  const myFavItems = createItemsFromObjects(
-    favShowsObjectsArr,
-    'preview--favourite'
-  );
-  //Paint li fav on the list fav
-  paintResults(myFavItems, favouritesListEl);
+  //Store my array of fav objects in LS
+  storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
 
-  //Store my favShowsObjectsArr in LS
-  storeObjectsOnLS('myObject', favShowsObjectsArr);
+  //Create li and paint them
+  drawFavourites();
 }
 
-//FUNCTIONS
+function drawResults(responseParsed) {
+  //Create li items from data
+  const myItems = createItemsFromObjects(responseParsed, 'show-card');
+  //Paint li on the list results
+  paintResults(myItems, resultListEl);
+
+  //Implement 'Add to Favourites' new functionality
+  const resultsCardsEls = document.querySelectorAll('.show-card');
+  for (const card of resultsCardsEls) {
+    card.addEventListener('click', handlerAddToFavClick);
+  }
+}
+
 function getShowsFromAPI(query) {
   fetch(`${URL}${query}`)
     .then(function(response) {
       return response.json();
     })
     .then(function(responseParsed) {
-      //On any search, I fill this array with the objects that come from the API, with all the info of each show on it!!
+      //On any search, I fill this empty array with the objects that come from the API, with ALL THE INFO of each show on it!!
       resultsObjectsArr = responseParsed;
 
       //If there are no results... :(
@@ -180,16 +157,7 @@ function getShowsFromAPI(query) {
 
         //If there are results, keep going :)
       } else {
-        //Create li items from data
-        const myItems = createItemsFromObjects(responseParsed, 'show-card');
-        //Paint li on the list results
-        paintResults(myItems, resultListEl);
-
-        // Add listener to each li card to impelment 'Add to Favourites' new functionality
-        const resultsCardsEls = document.querySelectorAll('.show-card');
-        for (const card of resultsCardsEls) {
-          card.addEventListener('click', handlerAddToFavClick);
-        }
+        drawResults(responseParsed);
       }
     });
 }
@@ -205,8 +173,10 @@ function handlerBtnSearchClick(event) {
   }
 }
 
+//All the things taht happen when loading the page
 //Add lister to main Search button
-btnEl.addEventListener('click', handlerBtnSearchClick);
-
-//Retrieve info from LS when refreshing
-refreshPage();
+const initApp = () => {
+  drawFavourites();
+  btnEl.addEventListener('click', handlerBtnSearchClick);
+};
+initApp();
