@@ -45,6 +45,7 @@ function createLiOnDOM(id, name, image, isFav) {
     itemBtnResetEl.appendChild(itemBtnResetText);
     itemBtnResetEl.classList.add('btn-reset');
     itemBtnResetEl.setAttribute('data-id', id);
+    itemBtnResetEl.setAttribute('type', 'button');
     itemBtnResetEl.setAttribute('title', 'Borra de favoritos');
     newItemEl.appendChild(itemBtnResetEl);
   } else {

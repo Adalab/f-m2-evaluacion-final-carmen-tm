@@ -14,7 +14,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding-bottom: 20px;
-  border-bottom: 2px solid $color-primary;
+  border-bottom: 2px solid $color-secondary;
 }
 
 .app-label {
@@ -30,27 +30,11 @@
   border-bottom: 1px solid $color-primary;
 }
 
-.btn {
-  color: $color-neutral-0;
-  padding: 2px 10px;
-  margin-left: 5px;
-  margin-bottom: 10px;
-  border-radius: 2px;
-
-  &-search {
-    background-color: $color-primary;
-  }
-
-  &-reset-all {
-    background-color: $color-neutral-1000;
-  }
-}
-
 .favourites {
   margin-top: 20px;
 
   &__title {
-    color: $color-primary;
+    color: $color-secondary;
     font-size: $font-size-L;
     margin-bottom: 5px;
   }
@@ -85,15 +69,6 @@
   }
 }
 
-.btn-reset {
-  color: $color-neutral-0;
-  background-color: $color-primary;
-  width: 20px;
-  height: 20px;
-  border-radius: 50px;
-  padding: 3px;
-}
-
 ////////////////////////////////////////////////
 
 // Styles for section app-result on the right side
@@ -101,7 +76,7 @@
   // flex-grow: 1;
   margin-left: 20px;
   padding-left: 20px;
-  border-left: 2px solid $color-primary;
+  border-left: 2px solid $color-secondary;
   &__list {
     display: flex;
     flex-direction: row;

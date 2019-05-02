@@ -1,0 +1,29 @@
+//Styles for all my buttons
+.btn {
+  color: $color-neutral-0;
+  padding: 2px 10px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+
+  &-search {
+    background-color: $color-primary;
+  }
+
+  &-reset {
+    color: $color-neutral-0;
+    background-color: $color-tertiary;
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-reset-all {
+    background-color: $color-tertiary;
+  }
+}
