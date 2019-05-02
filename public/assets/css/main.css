@@ -96,6 +96,10 @@ body {
   text-transform: uppercase;
 }
 
+.title__icon {
+  margin: auto 5px;
+}
+
 .app-main-content {
   padding: 20px;
   display: -webkit-box;
