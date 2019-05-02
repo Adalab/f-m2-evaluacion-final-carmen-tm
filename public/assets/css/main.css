@@ -1,5 +1,5 @@
 .btn {
-  color: white;
+  color: #ffffff;
   padding: 2px 10px;
   margin-left: 5px;
   margin-bottom: 10px;
@@ -11,7 +11,7 @@
 }
 
 .btn-reset {
-  color: white;
+  color: #ffffff;
   background-color: #373857;
   width: 20px;
   height: 20px;
@@ -78,7 +78,7 @@ body {
 .app-header {
   background-image: -webkit-gradient(linear, left top, right top, from(#ff7f50), to(#dc143c));
   background-image: linear-gradient(to right, #ff7f50, #dc143c);
-  color: white;
+  color: #ffffff;
   height: 80px;
   display: -webkit-box;
   display: -ms-flexbox;
