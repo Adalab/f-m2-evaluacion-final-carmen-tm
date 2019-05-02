@@ -156,6 +156,15 @@ function handlerBtnResetClick(event) {
 
   //Remove item from fav array
   removeItemFromArray(idBtnReset, favShowsObjectsArr);
+
+  //Change the class on the array of results
+  for (const item of resultsObjectsArr) {
+    if (item.show.id === parseInt(idBtnReset)) {
+      console.log('quiero quitar la clase favorita del item', idBtnReset);
+      const myItem = resultListEl.querySelector(`[data-id="${idBtnReset}"]`);
+      myItem.classList.remove('show-card--favourite');
+    }
+  }
 }
 
 //Add favourite functionlity on click
