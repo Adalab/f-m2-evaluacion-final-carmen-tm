@@ -50,8 +50,14 @@ function createLiOnDOM(id, name, image, isFav) {
     newItemEl.appendChild(itemBtnResetEl);
   } else {
     itemBtnResetEl = '';
-  }
 
+    for (const favItem of favShowsObjectsArr) {
+      if (id === favItem.show.id) {
+        console.log('item por dar clase', id);
+        newItemEl.classList.add('show-card--favourite');
+      }
+    }
+  }
   return newItemEl;
 }
 
@@ -149,6 +155,25 @@ function removeItemFromArray(id, array) {
   drawFavourites();
 }
 
+//Change the class on the array of results
+function findAndUpdateClass(id, array, myClass, classBoolean) {
+  for (const item of array) {
+    if (item.show.id === parseInt(id)) {
+      classBoolean
+        ? console.log('quiero poner la clase favorita del item', id)
+        : console.log('quiero quitar la clase favorita del item', id);
+      const myItem = resultListEl.querySelector(`[data-id="${id}"]`);
+
+      console.log(myItem);
+
+      //If true, add class. If false, remove it.
+      classBoolean
+        ? myItem.classList.add(myClass)
+        : myItem.classList.remove(myClass);
+    }
+  }
+}
+
 function handlerBtnResetClick(event) {
   console.log('click');
   const currentBtnReset = event.currentTarget;
@@ -157,14 +182,13 @@ function handlerBtnResetClick(event) {
   //Remove item from fav array
   removeItemFromArray(idBtnReset, favShowsObjectsArr);
 
-  //Change the class on the array of results
-  for (const item of resultsObjectsArr) {
-    if (item.show.id === parseInt(idBtnReset)) {
-      console.log('quiero quitar la clase favorita del item', idBtnReset);
-      const myItem = resultListEl.querySelector(`[data-id="${idBtnReset}"]`);
-      myItem.classList.remove('show-card--favourite');
-    }
-  }
+  //Update class from results (if removing a fav, show it)
+  findAndUpdateClass(
+    idBtnReset,
+    resultsObjectsArr,
+    'show-card--favourite',
+    false
+  );
 }
 
 //Add favourite functionlity on click
@@ -236,8 +260,16 @@ function handlerBtnSearchClick(event) {
   }
 }
 
+function syncResults() {
+  const resultsCards = resultListEl.querySelectorAll('.show-card');
+  console.log(resultsCards);
+  for (const show of resultsCards) {
+    show.classList.remove('show-card--favourite');
+  }
+}
 function handlerBtnResetAllClick() {
   favShowsObjectsArr = [];
+  syncResults();
 
   //Store my array of fav objects in LS
   storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
