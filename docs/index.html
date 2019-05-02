@@ -21,17 +21,18 @@
             <main class="app-main-content">
                 <div class="app-searcher-favourites">
                     <section class="app-searcher">
-                        <form method="get">
+                        <form>
                             <label for="show" class="app-label">Nombre de tu serie</label>
                             <div class="flex-container">
-                                <input type="text" class="app-input" name="show" />
-                                <button type="button" class="btn">Buscar</button>
+                                <input type="text" class="app-input" name="show" autofocus />
+                                <button type="submit" class="btn btn-search">Buscar</button>
                             </div>
                         </form>
                     </section>
                     <section class="favourites">
                          <h2 class="favourites__title">Mis series favoritas</h2>
 
+                        <button type="button" class="btn btn-reset-all">Borrar favoritos</button>
                         <p class="favourites__description">Haz click en tu serie favorita para añadirla a tu lista personalizada.</p>
                         <ul
                         class="favourites__list"></ul>
