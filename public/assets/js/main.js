@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 //ELEMENTS
@@ -14,7 +13,7 @@ const DEFULT_IMAGE = 'https://via.placeholder.com/210x295/f4eded/9b1414/?text=';
 const LS_FAVS_KEY = 'favShowsObjects';
 
 //EMPTY ARRAYS of OBJECTS
-//Empty array for storing all the info from the result on any search
+//Empty array for storing all the info from any search
 let resultsObjectsArr = [];
 //Always check if LS has something when starting/refreshing!! If not (falsy), give me an empty array
 let favShowsObjectsArr = JSON.parse(localStorage.getItem(LS_FAVS_KEY)) || [];
@@ -53,7 +52,6 @@ function createLiOnDOM(id, name, image, isFav) {
 
     for (const favItem of favShowsObjectsArr) {
       if (id === favItem.show.id) {
-        console.log('item por dar clase', id);
         newItemEl.classList.add('show-card--favourite');
       }
     }
@@ -99,7 +97,6 @@ function createItemsFromObjects(array, myClass, isFav) {
 
 //Append each li to its list
 function paintResults(array, list) {
-  // Reset list content
   list.innerHTML = '';
   for (const element of array) {
     list.appendChild(element);
@@ -145,7 +142,6 @@ function drawFavourites() {
 function removeItemFromArray(id, array) {
   for (let i = 0; i < array.length; i++) {
     if (array[i].show.id === parseInt(id)) {
-      console.log('item para borrar', id, array, i);
       array.splice(i, 1);
     }
   }
@@ -159,12 +155,7 @@ function removeItemFromArray(id, array) {
 function findAndUpdateClass(id, array, myClass, classBoolean) {
   for (const item of array) {
     if (item.show.id === parseInt(id)) {
-      classBoolean
-        ? console.log('quiero poner la clase favorita del item', id)
-        : console.log('quiero quitar la clase favorita del item', id);
       const myItem = resultListEl.querySelector(`[data-id="${id}"]`);
-
-      console.log(myItem);
 
       //If true, add class. If false, remove it.
       classBoolean
@@ -175,7 +166,6 @@ function findAndUpdateClass(id, array, myClass, classBoolean) {
 }
 
 function handlerBtnResetClick(event) {
-  console.log('click');
   const currentBtnReset = event.currentTarget;
   const idBtnReset = currentBtnReset.getAttribute('data-id');
 
@@ -195,7 +185,6 @@ function handlerBtnResetClick(event) {
 function handlerAddToFavClick(event) {
   const currentCard = event.currentTarget;
   const idFav = parseInt(currentCard.getAttribute('data-id'));
-  console.log(idFav);
 
   currentCard.classList.toggle('show-card--favourite');
 
@@ -262,7 +251,6 @@ function handlerBtnSearchClick(event) {
 
 function syncResults() {
   const resultsCards = resultListEl.querySelectorAll('.show-card');
-  console.log(resultsCards);
   for (const show of resultsCards) {
     show.classList.remove('show-card--favourite');
   }
