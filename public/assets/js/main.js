@@ -4,6 +4,7 @@
 //ELEMENTS
 const inputEl = document.querySelector('.app-input');
 const btnSearchEl = document.querySelector('.btn-search');
+const btnResetAllEl = document.querySelector('.btn-reset-all');
 
 const resultListEl = document.querySelector('.results__list');
 const favouritesListEl = document.querySelector('.favourites__list');
@@ -166,9 +167,6 @@ function handlerAddToFavClick(event) {
   currentCard.classList.toggle('show-card--favourite');
 
   if (currentCard.classList.contains('show-card--favourite')) {
-    console.log(
-      'Recién favorita, añádeme al LS y píntame en la lista de Favoritos'
-    );
     //Store my favourite show as an object in my fav objects array
     storeFavShowObjectInArr(idFav, resultsObjectsArr, favShowsObjectsArr);
 
@@ -178,9 +176,7 @@ function handlerAddToFavClick(event) {
     //Create li and paint them
     drawFavourites();
   } else {
-    console.log(
-      'era favorita, pero ya no. Quítame de LS y bórrame de favoritos'
-    );
+    //Remove from favourites
     removeItemFromArray(idFav, favShowsObjectsArr);
   }
 }
@@ -231,11 +227,22 @@ function handlerBtnSearchClick(event) {
   }
 }
 
+function handlerBtnResetAllClick() {
+  favShowsObjectsArr = [];
+
+  //Store my array of fav objects in LS
+  storeFavObjectsOnLS(LS_FAVS_KEY, favShowsObjectsArr);
+
+  //Create li and paint them
+  drawFavourites();
+}
+
 //All the things taht happen when loading the page
 //Add lister to main Search button
 const initApp = () => {
   drawFavourites();
   btnSearchEl.addEventListener('click', handlerBtnSearchClick);
+  btnResetAllEl.addEventListener('click', handlerBtnResetAllClick);
 };
 initApp();
 

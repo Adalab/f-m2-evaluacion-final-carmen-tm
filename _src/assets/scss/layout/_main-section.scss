@@ -30,12 +30,20 @@
   border-bottom: 1px solid $color-primary;
 }
 
-.btn-search {
-  background-color: $color-primary;
+.btn {
   color: $color-neutral-0;
   padding: 2px 10px;
   margin-left: 5px;
   margin-bottom: 10px;
+  border-radius: 2px;
+
+  &-search {
+    background-color: $color-primary;
+  }
+
+  &-reset-all {
+    background-color: $color-neutral-1000;
+  }
 }
 
 .favourites {
